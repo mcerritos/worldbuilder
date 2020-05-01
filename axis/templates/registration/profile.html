@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <h1>Welcome to your profile page!</h1>
+<div class="auth .uk-container-xlarge" >
+  <h3 class="uk-flex uk-flex-center uk-flex-middle rform">Welcome to your profile page!</h3>
 
-  {% for project in projects %}
-    <div class=".uk-card uk-card-default">
-      <div class=".uk-card-body">
-        <span class=".uk-card-title">{{ project.name }}</span>
-        <p>Description: {{ project.description }}</p>
+  {% if projects %}
+  <h4 class="uk-flex uk-flex-center uk-flex-middle">Pick a project to work on.</h4>
+    {% for project in projects %}
+      <div class=".uk-card uk-card-default card">
+        <div class=".uk-card-body">
+          <span class=".uk-card-title uk-flex uk-flex-center uk-flex-middle">{{ project.name }}</span>
+          <p class="uk-flex uk-flex-center uk-flex-middle">Description: {{ project.description }}</p>
+          <a href="/project/{{project.pk}}/delete" class="uk-button uk-button-default">Delete Project</a>
+          <a uk-toggle="target: #update-project" class="uk-button uk-button-default">Update Project</a>
+        </div>
       </div>
-    </div>
-  {% endfor %} 
+    {% endfor %} 
+  {% else %}
+      <h4 class="uk-flex uk-flex-center uk-flex-middle">It looks like you don't have any projects. Click the button below to get started.</h4>
+  {% endif %}
 
-<button uk-toggle="target: #new-project" type="button">Add a new project?</button>
+  <button uk-toggle="target: #new-project" class="uk-button uk-button-default uk-position-bottom-center rform" type="button">Add a new project?</button>
 
-<!-- This is the modal -->
+</div>
+
+<!-- new project modal -->
 <div id="new-project" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
         <h2 class="uk-modal-title">Create a new world...</h2>
@@ -25,6 +35,19 @@
         </form>
         {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
     </div>
+</div>
+
+<!-- update project modal -->
+<div id="update-project" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body">
+      <h2 class="uk-modal-title">Update your world.</h2>
+      <form action="/project/{{project.pk}}/update" method="POST">
+        {% csrf_token %}
+        {{ project_form.as_p }}
+        <input type="submit" class="btn" value="Add Project">
+      </form>
+      {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+  </div>
 </div>
 
 {% endblock %}

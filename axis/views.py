@@ -56,19 +56,20 @@ def profile(request):
 # 	return render(request, 'project_details.html', {'trip': trip, 'things': things, 'city': city })
 
 
-# def project_delete(request, trip_id):
-# 	Trip.objects.get(id=trip_id).delete()
-# 	return redirect('trips')
+def project_delete(request, project_id):
+	Project.objects.get(id=project_id).delete()
+	return redirect('profile')
 
 
-# def project_update(request, trip_id):
-# 	trip = Trip.objects.get(id=trip_id)
+def project_update(request, project_id):
+	project = Project.objects.get(id=project_id)
 
-# 	if request.method == 'POST':
-# 		form = TripForm(request.POST, instance=trip)
-# 		if form.is_valid():
-# 			new_Trip = form.save()
-# 			return redirect('trip_details', trip.id)
-# 	else:
-# 		form = TripForm(instance=trip)
-# 	return render(request, 'trip_update.html', {'form': form})
+	if request.method == 'POST':
+		form = ProjectForm(request.POST, instance=project)
+		if form.is_valid():
+			new_project = form.save()
+			return redirect('profile', project.id)
+	else:
+		form = ProjectForm(instance=project)
+
+	return render(request, 'registration/profile.html', {'form': form})
