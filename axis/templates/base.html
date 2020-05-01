@@ -19,6 +19,20 @@
 <body>
   <header>
     <div class="bg-img"></div>
+    {% if user.is_authenticated %}
+      <div class="nav_pic_container">
+        <div class="topnav">
+          <a href="{% url 'logout' %}">Log Out</a>
+        </div>
+      </div>
+    {% else %}
+    <div class="nav_pic_container">
+      <div class="topnav">
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'signup' %}">Register</a>
+      </div>
+      {% endif %}
+    </div>
 
     <nav id="nv" class=".uk-navbar-container" uk-navbar>
       <div class="uk-navbar-right">
