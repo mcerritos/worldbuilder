@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>Welcome to your profile page!</h1>
+
+  {% for project in projects %}
+    <div class=".uk-card uk-card-default">
+      <div class=".uk-card-body">
+        <span class=".uk-card-title">{{ project.name }}</span>
+        <p>Description: {{ project.description }}</p>
+      </div>
+    </div>
+  {% endfor %} 
+
+<button uk-toggle="target: #new-project" type="button">Add a new project?</button>
+
+<!-- This is the modal -->
+<div id="new-project" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Create a new world...</h2>
+        <form action="{% url 'profile' %}" method="POST">
+          {% csrf_token %}
+          {{ project_form.as_p }}
+          <input type="submit" class="btn" value="Add Project">
+        </form>
+        {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+    </div>
+</div>
+
+{% endblock %}
