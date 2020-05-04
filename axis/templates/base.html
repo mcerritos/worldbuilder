@@ -39,7 +39,13 @@
       <div class="uk-navbar-right">
         <ul class="uk-navbar-nav">
           <li><a href="/" >Worldbuilder</a></li>
-          <li><a href="/geography">Geography</a></li>
+          <li><a href="{% url 'culture' %}">Culture</a></li>
+          <li><a href="{% url 'geography' %}">Geography</a></li>
+          <li><a href="{% url 'government' %}">Government</a></li>
+          <li><a href="{% url 'history' %}">History</a></li>
+          <li><a href="{% url 'religion' %}">Religion</a></li>
+          <li><a href="{% url 'warfare' %}">Warfare</a></li>
+          
         </ul>
       </div>
     </nav>

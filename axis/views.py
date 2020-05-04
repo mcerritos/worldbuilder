@@ -2,20 +2,35 @@ from django.shortcuts import render, redirect
 from .models import Project
 from .forms import ProjectForm
 
-
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Define the home view
+################################# domain pages
 def home(request):
       return render(request, 'homepage.html')
 
-def geography(request):
-    return render(request, 'geography.html')
+def culture(request):
+    return render(request, 'domains/culture.html')
 
+def geography(request):
+    return render(request, 'domains/geography.html')
+
+def government(request):
+    return render(request, 'domains/government.html')
+
+def history(request):
+    return render(request, 'domains/history.html')
+
+def religion(request):
+    return render(request, 'domains/religion.html')
+
+def warfare(request):
+    return render(request, 'domains/warfare.html')
+
+################################### auth routes 
 def signup(request):
   error_message = ''
   if request.method == 'POST':
@@ -30,6 +45,7 @@ def signup(request):
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
 
+#################################### project crud + profile
 @login_required
 def profile(request):
   error_message = ''
@@ -55,11 +71,9 @@ def profile(request):
 # 	project_form = ProjectForm()
 # 	return render(request, 'project_details.html', {'trip': trip, 'things': things, 'city': city })
 
-
 def project_delete(request, project_id):
 	Project.objects.get(id=project_id).delete()
 	return redirect('profile')
-
 
 def project_update(request, project_id):
 	project = Project.objects.get(id=project_id)
