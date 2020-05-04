@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Project
+from .models import Project, Warfare, Culture, Question, Post
 from .forms import ProjectForm
 
 from django.views.generic import ListView, DetailView
@@ -13,7 +13,14 @@ def home(request):
       return render(request, 'homepage.html')
 
 def culture(request):
-    return render(request, 'domains/culture.html')
+  #find the active project // find the culture associated with that object
+  project_id = Project.objects.get(users=request.user)
+  c = Culture.objects.get(project=project_id)
+
+   # find all questions/posts associated with that domain
+  questions = Question.objects.filter(culture=c).all()
+  posts = Post.objects.filter(culture=c).all()
+  return render(request, 'domains/culture.html', {'questions' : questions, 'posts': posts})
 
 def geography(request):
     return render(request, 'domains/geography.html')
@@ -28,7 +35,13 @@ def religion(request):
     return render(request, 'domains/religion.html')
 
 def warfare(request):
-    return render(request, 'domains/warfare.html')
+  project_id = Project.objects.get(users=request.user)
+  w = Warfare.objects.get(project=project_id)
+
+  # find all questions/posts associated with that domain
+  questions = Question.objects.filter(warfare=w).all()
+  posts = Post.objects.filter(warfare=w).all()
+  return render(request, 'domains/warfare.html', {'questions' : questions, 'posts': posts} )
 
 ################################### auth routes 
 def signup(request):
@@ -71,10 +84,12 @@ def profile(request):
 # 	project_form = ProjectForm()
 # 	return render(request, 'project_details.html', {'trip': trip, 'things': things, 'city': city })
 
+@login_required
 def project_delete(request, project_id):
 	Project.objects.get(id=project_id).delete()
 	return redirect('profile')
 
+@login_required
 def project_update(request, project_id):
 	project = Project.objects.get(id=project_id)
 

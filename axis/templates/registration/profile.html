@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="auth .uk-container-xlarge" >
-  <h3 class="uk-flex uk-flex-center uk-flex-middle rform">Welcome to your profile page!</h3>
+  <h3 class="uk-flex uk-flex-center uk-flex-middle rform">Welcome to your profile page, {{user.username}}!</h3>
 
   {% if projects %}
   <h4 class="uk-flex uk-flex-center uk-flex-middle">Pick a project to work on.</h4>
