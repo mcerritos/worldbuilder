@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id="update-project">
+        <h2 class=>Update your world.</h2>
+        <form method="POST">
+          {% csrf_token %}
+          {{ project_form.as_p }}
+          <input  type="submit" class="btn" value="Update Project">
+        </form>
+        {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+    </div>
+  </div>
+
+  {% endblock %}

@@ -12,7 +12,8 @@
           <span class=".uk-card-title uk-flex uk-flex-center uk-flex-middle">{{ project.name }}</span>
           <p class="uk-flex uk-flex-center uk-flex-middle">Description: {{ project.description }}</p>
           <a href="/project/{{project.pk}}/delete" class="uk-button uk-button-default">Delete Project</a>
-          <a uk-toggle="target: #update-project" class="uk-button uk-button-default">Update Project</a>
+          <a uk-toggle="target: #update-project" data-projectid="{{project.pk}}" 
+           class="openUpdateModal uk-button uk-button-default" >Update Project</a>
         </div>
       </div>
     {% endfor %} 
@@ -40,11 +41,11 @@
 <!-- update project modal -->
 <div id="update-project" uk-modal>
   <div class="uk-modal-dialog uk-modal-body">
-      <h2 class="uk-modal-title">Update your world.</h2>
-      <form action="/project/{{project.pk}}/update" method="POST">
+      <h2 class="uk-modal-title">Update your project?</h2>
+      <form name="projectUpdateForm" action="{% url 'profile' %}" method="POST">
         {% csrf_token %}
         {{ project_form.as_p }}
-        <input type="submit" class="btn" value="Add Project">
+        <input type="submit" class="btn" id="updateButton">
       </form>
       {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
   </div>

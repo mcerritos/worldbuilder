@@ -68,7 +68,8 @@ def project_update(request, project_id):
 		form = ProjectForm(request.POST, instance=project)
 		if form.is_valid():
 			new_project = form.save()
-			return redirect('profile', project.id)
+			return redirect('profile')
+      
 	else:
 		form = ProjectForm(instance=project)
 
