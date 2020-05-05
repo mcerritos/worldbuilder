@@ -17,11 +17,11 @@
             <div class=".uk-card uk-card-default card">
                 <div class=".uk-card-body">
                 <h5 class=".uk-card-title uk-flex uk-flex-center uk-flex-middle">{{ post.title }}</h5>
-                <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }}</p>
+                <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }} and {{user.username}}</p>
                 <p class="uk-flex uk-flex-center uk-flex-middle">Description: {{ post.text }}</p>
-                <!-- {% if user.username == post.author %} -->
-                    <a href="/post/{{post.pk}}/delete" class="uk-button uk-button-default">Delete Post</a>
-                <!-- {% endif %} -->
+                {% if user.username == post.author.username %}
+                    <a href="/post/{{post.pk}}/delete" class="buttons uk-button uk-button-default">Delete Post</a>
+                {% endif %}
                 </div>
             </div>
             {% endfor %} 
@@ -31,15 +31,15 @@
             </div>
         {% endif %}
         <button uk-toggle="target: #new-post" 
-        class="uk-button uk-button-default uk-position-bottom-center rform" type="button">Add a new post.</button>
+        class="uk-button uk-button-default uk-position-bottom-center buttons rform" type="button">Add a new post</button>
     </div>
 
     <div id="new-post" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
-            <form action="{% url 'culture' %}" method="POST">
+            <form method="POST">
               {% csrf_token %}
               {{ post_form.as_p }}
-              <input type="submit" class="btn" value="Add Post">
+              <input type="submit" class="buttons" value="Add Post">
             </form>
             {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
         </div>

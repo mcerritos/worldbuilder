@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/css/uikit.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/js/uikit-icons.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Inknut+Antiqua&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
     <title>Worldbuilder</title>
@@ -37,9 +38,13 @@
     </div>
 
     <nav id="nv" class=".uk-navbar-container" uk-navbar>
+      <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav bottomnav">
+          <li><a href="/">Worldbuilder</a></li>
+        </ul>
+      </div>
       <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-          <li><a href="/" >Worldbuilder</a></li>
+        <ul class="uk-navbar-nav bottomnav">
           <li><a href="{% url 'culture' %}">Culture</a></li>
           <li><a href="{% url 'geography' %}">Geography</a></li>
           <li><a href="{% url 'government' %}">Government</a></li>

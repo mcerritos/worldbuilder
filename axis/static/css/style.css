@@ -5,6 +5,7 @@ body {
     min-height: 100vh;
     flex-direction: column;
     background-color: rgb(243, 235, 210);
+    font-family: 'Inknut Antiqua', serif;
 }
   
 main {
@@ -14,8 +15,13 @@ main {
 footer {
     padding-top: 0;
     text-align: center;
-    background-color: #F13C20;
-    color: #EFE2BA;
+    background-color: #c5cbe3;
+    color: #D79922;
+}
+
+.buttons {
+    border-color: #D79922;
+    background-color: #c5cbe3;
 }
 
 .card {
@@ -93,5 +99,10 @@ background-color: #D79922;
 color: #f2f2f2;
 }
 
+.bottomnav > li > a {
+    color: #f2f2f2;
+
+    padding: 1vh 1vw;
+}
 /* modal styles  */
 

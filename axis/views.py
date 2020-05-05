@@ -1,85 +1,99 @@
 from django.shortcuts import render, redirect
-from .models import Project, Warfare, Culture, Government, Question, Post
+from .models import Project, Warfare, Culture, Government, Religion, Question, Post
 from .forms import ProjectForm, PostForm
-
-from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-################################# domain pages
 def home(request):
       return render(request, 'homepage.html')
 
+################################# domain pages
+
+def handlePost(request, domain, d_name):
+    post_form = PostForm(request.POST)
+    if post_form.is_valid():
+      new_post = post_form.save()
+      new_post.author_id = request.user.id
+      domain.posts.add(new_post)
+      new_post.save()
+      return redirect("domains/"+d_name+"/")
+    else:
+      return 'Something went wrong - please enter your post again.' 
+
+def createNewProject(project_form, request):
+  new_project = project_form.save()
+  new_project.users.add(request.user)
+  new_project.save()
+  # create domains when project made
+  Culture.objects.create(project=new_project)
+  Warfare.objects.create(project=new_project)
+  Government.objects.create(project=new_project)
+  Religion.objects.create(project=new_project)
+      
+  return redirect('profile')
+
 
 def culture(request):
-  error_message=''
   #find the active project // find the culture associated with that object
   project_id = Project.objects.filter(users=request.user)[0]
   c = Culture.objects.get(project=project_id)
-
-   # find all questions/posts associated with that domain
   questions = Question.objects.filter(culture=c).all()
   posts = Post.objects.filter(culture=c).all()
 
   if request.method == 'POST':
-    post_form = PostForm(request.POST)
-    if post_form.is_valid() :
-      new_post = post_form.save()
-      new_post.author_id = request.user.id
-      c.posts.add(new_post)
-      new_post.save()
-      return redirect('culture')
-    else:
-      error_message = 'Something went wrong - please enter your post again.'
-    
-  else:
-    post_form = PostForm()
-  return render(request, 'domains/culture.html', {'questions' : questions, 'posts': posts, 'post_form': post_form,})
-
-def geography(request):
-    return render(request, 'domains/geography.html')
+    handlePost(request, c, "culture")
+  
+  post_form = PostForm()
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  return render(request, 'domains/culture.html', context )
 
 def government(request):
-  error_message=''
   #find the active project // find the gov domain associated with that object
   project_id = Project.objects.filter(users=request.user)[0]
   gov = Government.objects.get(project=project_id)
-
-   # find all questions/posts associated with that domain
   questions = Question.objects.filter(government=gov).all()
   posts = Post.objects.filter(government=gov).all()
 
   if request.method == 'POST':
-    post_form = PostForm(request.POST)
-    if post_form.is_valid() :
-      new_post = post_form.save()
-      new_post.author_id = request.user.id
-      gov.posts.add(new_post)
-      new_post.save()
-      return redirect('government')
-    else:
-      error_message = 'Something went wrong - please enter your post again.'
+    handlePost(request, gov, "government")
     
-  else:
-    post_form = PostForm()
-  return render(request, 'domains/government.html', {'questions' : questions, 'posts': posts, 'post_form': post_form,})
+  post_form = PostForm()
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  return render(request, 'domains/government.html', context)
 
 def history(request):
     return render(request, 'domains/history.html')
 
 def religion(request):
-    return render(request, 'domains/religion.html')
+  project_id = Project.objects.filter(users=request.user)[0]
+  r = Religion.objects.get(project=project_id)
+  questions = Question.objects.filter(religion=r).all()
+  posts = Post.objects.filter(religion=r).all()
+
+  if request.method == 'POST':
+    handlePost(request, r, "religion")
+  
+  post_form = PostForm()
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  return render(request, 'domains/religion.html', context )
+
+def geography(request):
+    return render(request, 'domains/geography.html')
 
 def warfare(request):
-  project_id = Project.objects.get(users=request.user)
+  project_id = Project.objects.filter(users=request.user)[0]
   w = Warfare.objects.get(project=project_id)
-
-  # find all questions/posts associated with that domain
   questions = Question.objects.filter(warfare=w).all()
   posts = Post.objects.filter(warfare=w).all()
-  return render(request, 'domains/warfare.html', {'questions' : questions, 'posts': posts} )
+
+  if request.method == 'POST':
+    handlePost(request, w, "warfare")
+  
+  post_form = PostForm()
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  return render(request, 'domains/warfare.html', context )
 
 ################################### auth routes 
 def signup(request):
@@ -89,7 +103,8 @@ def signup(request):
     if form.is_valid():
       user = form.save()
       login(request, user)
-      return redirect('home')
+      empty_project_form = ProjectForm
+      createNewProject(empty_project_form, request)
     else:
       error_message = 'Invalid sign up - try again'
   form = UserCreationForm()
@@ -106,22 +121,7 @@ def profile(request):
   if request.method == 'POST':
     project_form = ProjectForm(request.POST)
     if project_form.is_valid() :
-      new_project = project_form.save()
-      new_project.users.add(request.user)
-      new_project.save()
-
-      #if project is active make all other projects from that user inactive
-      if (new_project.current == True):
-        other_projects = Project.objects.filter(users=request.user).exclude(id=new_project.id)
-        for project in other_projects:
-          project.current = False
-
-      # create domains when project made
-      Culture.objects.create(project=new_project)
-      Warfare.objects.create(project=new_project)
-      Government.objects.create(project=new_project)
-      
-      return redirect('profile')
+      createNewProject(project_form, request)
     else:
       error_message = 'Invalid project - try again'
     
@@ -129,11 +129,6 @@ def profile(request):
     project_form = ProjectForm()
   
   return render(request, 'registration/profile.html', { 'projects': projects, 'project_form': project_form, 'error_message': error_message })
-
-# def project_details(request, project_id):
-# 	project = Project.objects.get(id=project_id)
-# 	project_form = ProjectForm()
-# 	return render(request, 'project_details.html', {'trip': trip, 'things': things, 'city': city })
 
 @login_required
 def project_delete(request, project_id):
@@ -143,9 +138,10 @@ def project_delete(request, project_id):
 @login_required
 def project_update(request, project_id):
   project = Project.objects.get(id=project_id)
+  print(project)
   
   if request.method == 'POST':
-    form = ProjectForm(request.POST, instance=project)
+    form = ProjectForm(request.POST or None, instance=project)
     if form.is_valid():
       new_project = form.save()
       if new_project.current == True :
@@ -169,3 +165,10 @@ def post_delete(request, post_id):
     Post.objects.get(id=post_id).delete()
   
   return redirect('profile')
+
+
+  #if project is active make all other projects from that user inactive
+      # if (new_project.current == True):
+      #   other_projects = Project.objects.filter(users=request.user).exclude(id=new_project.id)
+      #   for project in other_projects:
+      #     project.current = False
