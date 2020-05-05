@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% block specific %}
+    {% endblock %}
+
+    <div class=".uk-card uk-card-default card">
+        <h5 class="uk-flex uk-flex-center uk-flex-middle">Questions</h5>
+        {% for question in questions %}
+            <p class="uk-flex uk-flex-center uk-flex-middle"> Description: {{ question.text }}</p>
+        {% endfor %} 
+    </div>
+    
+    <div class=".uk-card uk-card-default card">
+        {% if posts %}
+            {% for post in posts %}
+            <div class=".uk-card uk-card-default card">
+                <div class=".uk-card-body">
+                <h5 class=".uk-card-title uk-flex uk-flex-center uk-flex-middle">{{ post.title }}</h5>
+                <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }}</p>
+                <p class="uk-flex uk-flex-center uk-flex-middle">Description: {{ post.text }}</p>
+                <!-- {% if user.username == post.author %} -->
+                    <a href="/post/{{post.pk}}/delete" class="uk-button uk-button-default">Delete Post</a>
+                <!-- {% endif %} -->
+                </div>
+            </div>
+            {% endfor %} 
+        {% else %}
+            <div class=".uk-card uk-card-default card">
+                <h5>Looking for inspiration? Check out the questions.</h5>
+            </div>
+        {% endif %}
+        <button uk-toggle="target: #new-post" 
+        class="uk-button uk-button-default uk-position-bottom-center rform" type="button">Add a new post.</button>
+    </div>
+
+    <div id="new-post" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <form action="{% url 'culture' %}" method="POST">
+              {% csrf_token %}
+              {{ post_form.as_p }}
+              <input type="submit" class="btn" value="Add Post">
+            </form>
+            {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

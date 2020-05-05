@@ -16,5 +16,7 @@ urlpatterns = [
     path('history/', views.history, name='history'),
     path('religion/', views.religion, name='religion'),
     path('warfare/', views.warfare, name='warfare'),
+    #posts
+    path('post/<int:post_id>/delete', views.post_delete, name='post_delete'),
     
 ]

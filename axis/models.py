@@ -35,3 +35,9 @@ class Warfare(models.Model):
     questions = models.ManyToManyField(Question)
     posts = models.ManyToManyField(Post)
 
+class Government(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    navbar =models.BooleanField(default=True)
+    questions = models.ManyToManyField(Question)
+    posts = models.ManyToManyField(Post)
+
