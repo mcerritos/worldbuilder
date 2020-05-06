@@ -41,7 +41,8 @@
 <!-- update project modal -->
 <div id="update-project" uk-modal>
   <div class="uk-modal-dialog uk-modal-body" id="projectUpdateDiv">
-      <h2>Update your project?</h2>
+      <h2>Update your project?</h2> 
+      <!-- the url here is just a placeholder -->
       <form name="projectUpdateForm" action="{% url 'profile' %}" method="POST">
         {% csrf_token %}
           <label for="name">Project name:</label><br>
