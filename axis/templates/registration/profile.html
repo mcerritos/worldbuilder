@@ -9,8 +9,8 @@
     {% for project in projects %}
       <div class=".uk-card uk-card-default card">
         <div class=".uk-card-body">
-          <span class=".uk-card-title uk-flex uk-flex-center uk-flex-middle">{{ project.name }}</span>
-          <p class="uk-flex uk-flex-center uk-flex-middle">Description: {{ project.description }}</p>
+          <span class=".uk-card-title uk-flex uk-flex-center uk-flex-middle q{{project.pk}}">{{ project.name }}</span>
+          <p class="uk-flex uk-flex-center uk-flex-middle q{{project.pk}}">Description: {{ project.description }}</p>
           <a href="/project/{{project.pk}}/delete" class="uk-button uk-button-default buttons">Delete Project</a>
           <a uk-toggle="target: #update-project" data-projectid="{{project.pk}}" 
            class="openUpdateModal uk-button uk-button-default buttons" >Update Project</a>
@@ -40,11 +40,16 @@
 
 <!-- update project modal -->
 <div id="update-project" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-      <h2 class="uk-modal-title">Update your project?</h2>
+  <div class="uk-modal-dialog uk-modal-body" id="projectUpdateDiv">
+      <h2>Update your project?</h2>
       <form name="projectUpdateForm" action="{% url 'profile' %}" method="POST">
         {% csrf_token %}
-        {{ project_form.as_p }}
+          <label for="name">Project name:</label><br>
+          <input type="text" id="updateName" name="name"><br>
+          <label for="description">Description:</label><br>
+          <textarea rows="20" cols="30" maxlength="500" id="updateDescription" name="description"></textarea><br>
+          <input type="checkbox" id="current" name="current" value="True">
+          <label for="current"> Make this the current project? </label><br>
         <input type="submit" class="btn buttons" id="updateButton">
       </form>
       {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}

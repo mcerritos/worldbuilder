@@ -64,7 +64,6 @@ def culture(request):
   return render(request, 'domains/culture.html', context )
 
 def government(request):
-  #find the active project // find the gov domain associated with that object
   project_id = getCurrentProject(request)
   gov = Government.objects.get(project=project_id)
   questions = Question.objects.filter(government=gov).all()
@@ -152,7 +151,6 @@ def project_delete(request, project_id):
 @login_required
 def project_update(request, project_id):
   project = Project.objects.get(id=project_id)
-  print(project)
   
   if request.method == 'POST':
     form = ProjectForm(request.POST or None, instance=project)
@@ -180,9 +178,18 @@ def post_delete(request, post_id):
   
   return redirect('profile')
 
+@login_required
+def post_update(request, post_id, destination):
+  post = Post.objects.get(id=post_id)
+  
+  if request.method == 'POST':
+    form = PostForm(request.POST or None, instance=post)
+    if form.is_valid():
+      post_to_update = form.save()
+    return redirect('destination')
+      
+  else:
+    form = ProjectForm(instance=project)
+    
+  return render(request, 'registration/profile.html', {'form': form})
 
-  #if project is active make all other projects from that user inactive
-      # if (new_project.current == True):
-      #   other_projects = Project.objects.filter(users=request.user).exclude(id=new_project.id)
-      #   for project in other_projects:
-      #     project.current = False

@@ -56,15 +56,11 @@ footer {
     position: relative;
   }
 
-#nv {
-    background-color: rgb(106, 82, 150);
-    max-height: 5vh;
-}
-
 #greeting{
     background-color: #EFE2BA;
     padding: 1vh;
     border-radius: 25px;
+    margin-top: -3vh;
     
 }
 
@@ -73,36 +69,59 @@ footer {
     margin-top: -10vh;
     margin-left: 2vw;
     width: auto;
-  }
+}
 
-.topnav {
-overflow: hidden;
-background-color:  rgb(106, 82, 150);
-color: #D79922;
-border-radius: 25px;
-margin-top: -2vh ;
-margin-left: 2vh;
+.topnav  {
+    overflow: hidden;
+    background-color:  rgb(106, 82, 150);
+    color: #D79922;
+    border-radius: 25px;
+    margin-top: -1vh ;
+    margin-left: 3vh;
 }
 
 .topnav a {
-float: left;
-color: #f2f2f2;
-text-align: center;
-padding: 1vh 1vw;
-text-decoration: none;
-font-size: 17px;
-
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 1vh 1vw;
+    text-decoration: none;
+    font-size: 17px;
 }
   
 .topnav a:hover {
-background-color: #D79922;
-color: #f2f2f2;
+    background-color: #D79922;
+    color: #f2f2f2;
+}
+
+#nv {
+    background-color: rgb(106, 82, 150);
+    border-bottom: solid #d79922;
 }
 
 .bottomnav > li > a {
     color: #f2f2f2;
-
-    padding: 1vh 1vw;
+    padding: .5vh 3vw;
+    font-weight: bold;
+    min-height: 5vh;
+    
 }
+
+.bottomnav > li > a:hover {
+    background-color: #D79922;
+    color: #f2f2f2;
+}
+
 /* modal styles  */
+
+#projectUpdateDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#updateDescription {
+    height: auto;
+    width: auto;
+}
 

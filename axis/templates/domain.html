@@ -17,10 +17,11 @@
             <div class=".uk-card uk-card-default card">
                 <div class=".uk-card-body">
                 <h5 class=".uk-card-title uk-flex uk-flex-center uk-flex-middle">{{ post.title }}</h5>
-                <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }} and {{user.username}}</p>
+                <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }} </p>
                 <p class="uk-flex uk-flex-center uk-flex-middle">Description: {{ post.text }}</p>
                 {% if user.username == post.author.username %}
                     <a href="/post/{{post.pk}}/delete" class="buttons uk-button uk-button-default">Delete Post</a>
+                    <a href="/post/{{post.pk}}/update" class="buttons uk-button uk-button-default">Update Post</a>
                 {% endif %}
                 </div>
             </div>

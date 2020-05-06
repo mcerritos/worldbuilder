@@ -22,7 +22,7 @@
     <div class="bg-img"></div>
     {% if user.is_authenticated %}
       <div class="nav_pic_container">
-        <h5 id="greeting">Welcome back, {{user.username}} !</h5>
+        <!-- <h5 id="greeting">Welcome back, {{user.username}} !</h5> -->
         <div class="topnav">
           <a href="{% url 'profile' %}">Profile</a>
           <a href="{% url 'logout' %}">Log Out</a>
