@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Project, Warfare, Culture, Government, Religion, Question, Post
+from .models import Project, Profile, Warfare, Culture, Government, Religion, Question, Post
 from .forms import ProjectForm, PostForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 def home(request):
       return render(request, 'homepage.html')
 
-################################# domain pages
+### functions to handle functionality that is the same across different routes
 
 def handlePost(request, domain, d_name):
     post_form = PostForm(request.POST)
@@ -22,8 +22,17 @@ def handlePost(request, domain, d_name):
     else:
       return 'Something went wrong - please enter your post again.' 
 
-def createNewProject(project_form, request):
-  new_project = project_form.save()
+def getCurrentProject(request):
+  profile = Profile.objects.get(user=request.user)
+  project_id = profile.current_project
+  return project_id
+
+def createNewProject(project_form, request, populated):
+  if populated:
+    new_project = project_form.save()
+  else:
+    new_project = Project.objects.create()
+  
   new_project.users.add(request.user)
   new_project.save()
   # create domains when project made
@@ -31,13 +40,18 @@ def createNewProject(project_form, request):
   Warfare.objects.create(project=new_project)
   Government.objects.create(project=new_project)
   Religion.objects.create(project=new_project)
+
+  #get profile associated with user and set current project to the new project
+  profile = Profile.objects.get(user=request.user)
+  profile.current_project = new_project
+  profile.save()
       
   return redirect('profile')
 
-
+################################# domain pages
 def culture(request):
-  #find the active project // find the culture associated with that object
-  project_id = Project.objects.filter(users=request.user)[0]
+  project_id = getCurrentProject(request)
+
   c = Culture.objects.get(project=project_id)
   questions = Question.objects.filter(culture=c).all()
   posts = Post.objects.filter(culture=c).all()
@@ -51,7 +65,7 @@ def culture(request):
 
 def government(request):
   #find the active project // find the gov domain associated with that object
-  project_id = Project.objects.filter(users=request.user)[0]
+  project_id = getCurrentProject(request)
   gov = Government.objects.get(project=project_id)
   questions = Question.objects.filter(government=gov).all()
   posts = Post.objects.filter(government=gov).all()
@@ -67,7 +81,7 @@ def history(request):
     return render(request, 'domains/history.html')
 
 def religion(request):
-  project_id = Project.objects.filter(users=request.user)[0]
+  project_id = getCurrentProject(request)
   r = Religion.objects.get(project=project_id)
   questions = Question.objects.filter(religion=r).all()
   posts = Post.objects.filter(religion=r).all()
@@ -83,7 +97,7 @@ def geography(request):
     return render(request, 'domains/geography.html')
 
 def warfare(request):
-  project_id = Project.objects.filter(users=request.user)[0]
+  project_id = getCurrentProject(request)
   w = Warfare.objects.get(project=project_id)
   questions = Question.objects.filter(warfare=w).all()
   posts = Post.objects.filter(warfare=w).all()
@@ -103,8 +117,8 @@ def signup(request):
     if form.is_valid():
       user = form.save()
       login(request, user)
-      empty_project_form = ProjectForm
-      createNewProject(empty_project_form, request)
+      project_form = ProjectForm()
+      createNewProject(project_form, request, False)
     else:
       error_message = 'Invalid sign up - try again'
   form = UserCreationForm()
@@ -121,7 +135,7 @@ def profile(request):
   if request.method == 'POST':
     project_form = ProjectForm(request.POST)
     if project_form.is_valid() :
-      createNewProject(project_form, request)
+      createNewProject(project_form, request, True)
     else:
       error_message = 'Invalid project - try again'
     
@@ -143,11 +157,11 @@ def project_update(request, project_id):
   if request.method == 'POST':
     form = ProjectForm(request.POST or None, instance=project)
     if form.is_valid():
-      new_project = form.save()
-      if new_project.current == True :
-        other_projects = Project.objects.exclude(id=new_project.id)
-        for project in other_projects:
-          project.current = False
+      project_to_update = form.save()
+      if project_to_update.current == True :
+        profile = Profile.objects.get(user=request.user)
+        profile.current_project = project_to_update
+        profile.save()
     return redirect('profile')
       
   else:
