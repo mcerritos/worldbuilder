@@ -11,6 +11,8 @@ def home(request):
 
 ### functions to handle functionality that is the same across different routes
 
+domains = [Culture, Warfare, Government, Religion] #taking out non-modeled domains hist and geo
+
 def handlePost(request, domain, d_name):
     post_form = PostForm(request.POST)
     if post_form.is_valid():
@@ -35,11 +37,14 @@ def createNewProject(project_form, request, populated):
   
   new_project.users.add(request.user)
   new_project.save()
+  
   # create domains when project made
-  Culture.objects.create(project=new_project)
-  Warfare.objects.create(project=new_project)
-  Government.objects.create(project=new_project)
-  Religion.objects.create(project=new_project)
+  for dom in domains:
+    new_domain = dom.objects.create(project=new_project)
+    domain_questions = Question.objects.filter(domain=dom)
+    for q in domain_questions:
+      new_domain.questions.add(q)
+      new_domain.save()
 
   #get profile associated with user and set current project to the new project
   profile = Profile.objects.get(user=request.user)

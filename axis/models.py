@@ -17,12 +17,13 @@ class Project(models.Model):
 class Question(models.Model):
     text = models.TextField(max_length=250)
     display = models.BooleanField(default=True)
+    domain = models.TextField(default="Miscellaneous")
 
 class Post(models.Model):
-    text = models.TextField(max_length=2000)
-    author= models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
     title= models.CharField(max_length=150)
-
+    author= models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
+    text = models.TextField(max_length=2000)
+    
     def __str__(self):
         return self.title + " by " + self.author.username 
 
@@ -43,6 +44,8 @@ def save_user_profile(sender, instance, **kwargs):
 ##### domain models 
 
 class Culture(models.Model):
+    title: models.CharField(max_length=200)
+    summary: models.TextField(max_length=500)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     navbar =models.BooleanField(default=True)
     questions = models.ManyToManyField(Question)
