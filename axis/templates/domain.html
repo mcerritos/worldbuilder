@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">Domain title</h5> <hr />
+        <h5 id="projectSubtitle">{{current_project.name}}</h5>
+        <p>A quote about that domain.</p>
+        <p>A summary of text about the domain</p>
+    </div>
 
     {% block specific %}
     {% endblock %}
-
-    <!-- {% if user.is_authenticated %}
-    <div class=".uk-card uk-card-default card">
-        <h5 class="uk-flex uk-flex-center uk-flex-middle">Questions</h5>
-        {% for question in questions %}
-            <p class="uk-flex uk-flex-center uk-flex-middle"> Description: {{ question.text }}</p>
-        {% endfor %} 
-    </div>
-    {% endif %} -->
     
     <div class=".uk-card uk-card-default card">
         {% if posts %}
@@ -22,7 +19,7 @@
                 <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }} </p>
                 <p class="uk-flex uk-flex-center uk-flex-middle p{{post.pk}}">Description: {{ post.text }}</p>
                 {% if user.username == post.author.username %}
-                    <a href="/post/{{post.pk}}/delete" class="buttons uk-button uk-button-default ">Delete Post</a>
+                    <a href="/post/{{post.pk}}/delete" class="buttons uk-button uk-button-default">Delete Post</a>
                     <a uk-toggle="target: #update-post" class="buttons uk-button uk-button-default openUpdatePost"
                      data-postid="{{post.pk}}" >Update Post</a>
                 {% endif %}
@@ -30,12 +27,12 @@
             </div>
             {% endfor %} 
         {% else %}
-            <div class=".uk-card uk-card-default card">
-                <h5>Looking for inspiration? Check out the questions.</h5>
+            <div>
+                <p>Looking for inspiration? Check out the questions.</p>
             </div>
         {% endif %}
         <button uk-toggle="target: #new-post" 
-        class="uk-button uk-button-default uk-position-bottom-center buttons rform" type="button">Add a new post</button>
+        class="uk-button uk-button-default uk-flex-center uk-flex-middle buttons" >Add a new post</button>
     </div>
 
      <!-- new post modal -->
@@ -43,7 +40,7 @@
         <div class="uk-modal-dialog uk-modal-body">
             <form method="POST">
               {% csrf_token %}
-              {{ post_form.as_p }}
+              {{ post_form.as_p }} <br><br>
               <input type="submit" class="buttons" value="Add Post">
             </form>
             {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
@@ -58,12 +55,21 @@
                 <label for="name">Title:</label><br>
                 <input type="text" id="updateTitle" name="name"><br>
                 <label for="text">Text:</label><br>
-                <textarea rows="20" cols="30" maxlength="500" id="updateText" name="text"></textarea><br>
+                <textarea rows="20" cols="30" maxlength="500" id="updateText" name="text"></textarea><br><br>
             <input type="submit" class="btn buttons" id="updatePostButton">
             </form>
             {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
         </div>
     </div>
+
+        <!-- {% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <h5 class="uk-flex uk-flex-center uk-flex-middle">Questions</h5>
+        {% for question in questions %}
+            <p class="uk-flex uk-flex-center uk-flex-middle"> Description: {{ question.text }}</p>
+        {% endfor %} 
+    </div>
+    {% endif %} -->
 
 
 {% endblock %}

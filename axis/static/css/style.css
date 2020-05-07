@@ -7,6 +7,10 @@ body {
     background-color: rgb(243, 235, 210);
     font-family: 'Inknut Antiqua', serif;
 }
+
+h1, h2, h3, h4, h5, h6, p {
+    font-family: 'Inknut Antiqua', serif;
+}
   
 main {
     flex: 1 0 auto;
@@ -22,6 +26,7 @@ footer {
 .buttons {
     border-color: #D79922;
     background-color: #c5cbe3;
+    align-self: center;
 }
 
 .card {
@@ -29,6 +34,9 @@ footer {
     background-color: white;
     margin: 2vw;
     padding: 1vw;
+    display: flex;
+    flex-direction: column;
+
 }
 
 /* register styles */
@@ -129,5 +137,22 @@ footer {
 
 #showQuestions {
     display: none;
+    max-width: 10vw;
 }
+
+#hideQuestions {
+    max-width: 10vw;
+}
+
+/* summary styles */
+#domainHeader {
+    margin-bottom: 0;
+}
+#projectSubtitle {
+    margin-top: 0;
+}
+
+/* 
+<li><a href="{% url 'culture' project_name={{current_project.name}} %}">Culture</a></li> 
+*/
 

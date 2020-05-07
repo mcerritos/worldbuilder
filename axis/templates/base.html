@@ -22,7 +22,6 @@
     <div class="bg-img"></div>
     {% if user.is_authenticated %}
       <div class="nav_pic_container">
-        <!-- <h5 id="greeting">Welcome back, {{user.username}} !</h5> -->
         <div class="topnav">
           <a href="{% url 'profile' %}">Profile</a>
           <a href="{% url 'logout' %}">Log Out</a>
@@ -41,24 +40,26 @@
       <div class="uk-navbar-left">
         <ul class="uk-navbar-nav bottomnav">
           <li><a href="/">Worldbuilder</a></li>
+          <li><a href="/">{{current_project.name}}</a></li>
         </ul>
       </div>
+      {% if user.is_authenticated %}
       <div class="uk-navbar-right">
         <ul class="uk-navbar-nav bottomnav">
-          <li><a href="{% url 'culture' %}">Culture</a></li>
-          <li><a href="{% url 'geography' %}">Geography</a></li>
-          <li><a href="{% url 'government' %}">Government</a></li>
-          <li><a href="{% url 'history' %}">History</a></li>
-          <li><a href="{% url 'religion' %}">Religion</a></li>
-          <li><a href="{% url 'warfare' %}">Warfare</a></li>
-          
+          <li><a href="{% url 'culture' current_project.name %}">Culture</a></li> 
+          <li><a href="{% url 'geography' current_project.name %}">Geography</a></li>
+          <li><a href="{% url 'government' current_project.name %}">Government</a></li>
+          <li><a href="{% url 'history' current_project.name %}">History</a></li>
+          <li><a href="{% url 'religion' current_project.name%}">Religion</a></li>
+          <li><a href="{% url 'warfare' current_project.name%}">Warfare</a></li>
         </ul>
       </div>
+      {% endif %}
     </nav>
  
   </header>
 
-  <main class="container uk-inline">
+  <main id="page_content" class="container uk-inline">
     {% block content %}
     {% endblock %}
   </main>

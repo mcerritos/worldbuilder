@@ -1,32 +1,40 @@
 from django.shortcuts import render, redirect
-from .models import Project, Profile, Warfare, Culture, Government, Religion, Question, Post
-from .forms import ProjectForm, PostForm
+from .models import Project, Profile, Post, Picture, Warfare, Culture, Government, Religion, Question, Geography
+from .forms import ProjectForm, PostForm, PictureForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 def home(request):
-      return render(request, 'homepage.html')
+  if not request.user.is_authenticated:
+    project_id = { name: ""}
+  else: 
+    profile = Profile.objects.get(user=request.user)
+    project_id = profile.current_project
+  return render(request, 'homepage.html', {'current_project': project_id} )
 
 ### functions to handle functionality that is the same across different routes
 
 domains = [Culture, Warfare, Government, Religion] #taking out non-modeled domains hist and geo
 
 def handlePost(request, domain, d_name):
-    post_form = PostForm(request.POST)
-    if post_form.is_valid():
-      new_post = post_form.save()
-      new_post.author_id = request.user.id
-      domain.posts.add(new_post)
-      new_post.save()
-      return redirect("domains/"+d_name+"/")
-    else:
-      return 'Something went wrong - please enter your post again.' 
+  post_form = PostForm(request.POST)
+  if post_form.is_valid():
+    new_post = post_form.save()
+    new_post.author_id = request.user.id
+    domain.posts.add(new_post)
+    new_post.save()
+    return redirect("domains/"+d_name+"/")
+  else:
+    return 'Something went wrong - please enter your post again.' 
 
-def getCurrentProject(request):
-  profile = Profile.objects.get(user=request.user)
-  project_id = profile.current_project
+def getCurrentProject(request, project_name):
+  if not request.user.is_authenticated:
+    project_id= Project.objects.get(name=project_name)
+  else: 
+    profile = Profile.objects.get(user=request.user)
+    project_id = profile.current_project
   return project_id
 
 def createNewProject(project_form, request, populated):
@@ -54,9 +62,8 @@ def createNewProject(project_form, request, populated):
   return redirect('profile')
 
 ################################# domain pages
-def culture(request):
-  project_id = getCurrentProject(request)
-
+def culture(request, project_name):
+  project_id = getCurrentProject(request, project_name)
   c = Culture.objects.get(project=project_id)
   questions = Question.objects.filter(culture=c).all()
   posts = Post.objects.filter(culture=c).all()
@@ -65,11 +72,11 @@ def culture(request):
     handlePost(request, c, "culture")
   
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
   return render(request, 'domains/culture.html', context )
 
-def government(request):
-  project_id = getCurrentProject(request)
+def government(request, project_name):
+  project_id = getCurrentProject(request, project_name)
   gov = Government.objects.get(project=project_id)
   questions = Question.objects.filter(government=gov).all()
   posts = Post.objects.filter(government=gov).all()
@@ -78,14 +85,14 @@ def government(request):
     handlePost(request, gov, "government")
     
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
   return render(request, 'domains/government.html', context)
 
-def history(request):
+def history(request, project_name):
     return render(request, 'domains/history.html')
 
-def religion(request):
-  project_id = getCurrentProject(request)
+def religion(request, project_name):
+  project_id = getCurrentProject(request, project_name)
   r = Religion.objects.get(project=project_id)
   questions = Question.objects.filter(religion=r).all()
   posts = Post.objects.filter(religion=r).all()
@@ -94,14 +101,33 @@ def religion(request):
     handlePost(request, r, "religion")
   
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
   return render(request, 'domains/religion.html', context )
 
-def geography(request):
-    return render(request, 'domains/geography.html')
+def geography(request, project_name):
+  project_id = getCurrentProject(request, project_name)
+  geo = Geography.objects.get(project=project_id)
+  questions = Question.objects.filter(geography=geo).all()
+  posts = Post.objects.filter(geography=geo).all()
 
-def warfare(request):
-  project_id = getCurrentProject(request)
+  #try printing request.files
+  if request.method == 'POST' and request.FILES:
+    form = PictureForm(request.POST, request.FILES)
+    print(form)
+    if form.is_valid(): 
+        form.save() 
+        return redirect("domains/geography/") 
+
+  if request.method == 'POST':
+    handlePost(request, gov, "government")
+    
+  post_form = PostForm()
+  picture_form = PictureForm()
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form}
+  return render(request, 'domains/geography.html', context)
+
+def warfare(request, project_name):
+  project_id = getCurrentProject(request, project_name)
   w = Warfare.objects.get(project=project_id)
   questions = Question.objects.filter(warfare=w).all()
   posts = Post.objects.filter(warfare=w).all()
@@ -110,7 +136,7 @@ def warfare(request):
     handlePost(request, w, "warfare")
   
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form}
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
   return render(request, 'domains/warfare.html', context )
 
 ################################### auth routes 
@@ -133,6 +159,7 @@ def signup(request):
 @login_required
 def profile(request):
   error_message = ''
+  project_id = getCurrentProject(request, "placeholder")
   projects = Project.objects.filter(users=request.user)
   
   # project creation if posted
@@ -146,7 +173,7 @@ def profile(request):
   else:
     project_form = ProjectForm()
   
-  return render(request, 'registration/profile.html', { 'projects': projects, 'project_form': project_form, 'error_message': error_message })
+  return render(request, 'registration/profile.html', { 'projects': projects, 'project_form': project_form, 'error_message': error_message, 'current_project': project_id })
 
 @login_required
 def project_delete(request, project_id):

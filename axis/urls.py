@@ -12,10 +12,10 @@ urlpatterns = [
     path('post/<int:post_id>/delete', views.post_delete, name='post_delete'),
     path('post/<int:post_id>/update', views.post_update, name='post_update'),
     # domains
-    path('geography/', views.geography, name='geography'),
-    path('culture/', views.culture, name='culture'),
-    path('government/', views.government, name='government'),
-    path('history/', views.history, name='history'),
-    path('religion/', views.religion, name='religion'),
-    path('warfare/', views.warfare, name='warfare'),
+    path('<slug:project_name>/geography/', views.geography, name='geography'),
+    path('<slug:project_name>/culture/', views.culture, name='culture'),
+    path('<slug:project_name>/government/', views.government, name='government'),
+    path('<slug:project_name>/history/', views.history, name='history'),
+    path('<slug:project_name>/religion/', views.religion, name='religion'),
+    path('<slug:project_name>/warfare/', views.warfare, name='warfare'),
 ]

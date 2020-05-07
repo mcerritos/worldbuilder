@@ -27,6 +27,13 @@ class Post(models.Model):
     def __str__(self):
         return self.title + " by " + self.author.username 
 
+class Picture(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/')
+    domain = models.TextField(default="Miscellaneous")
+
+#### profile class 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
@@ -64,6 +71,12 @@ class Government(models.Model):
     posts = models.ManyToManyField(Post)
 
 class Religion(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    navbar = models.BooleanField(default=True)
+    questions = models.ManyToManyField(Question)
+    posts = models.ManyToManyField(Post)
+
+class Geography(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     navbar = models.BooleanField(default=True)
     questions = models.ManyToManyField(Question)

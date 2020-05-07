@@ -10,7 +10,7 @@
       <div class=".uk-card uk-card-default card">
         <div class=".uk-card-body">
           <span class=".uk-card-title uk-flex uk-flex-center uk-flex-middle q{{project.pk}}">{{ project.name }}</span>
-          <p class="uk-flex uk-flex-center uk-flex-middle q{{project.pk}}">Description: {{ project.description }}</p>
+          <p class="uk-flex uk-flex-center uk-flex-middle q{{project.pk}}">{{ project.description }}</p>
           <a href="/project/{{project.pk}}/delete" class="uk-button uk-button-default buttons">Delete Project</a>
           <a uk-toggle="target: #update-project" data-projectid="{{project.pk}}" 
            class="openUpdateModal uk-button uk-button-default buttons" >Update Project</a>
@@ -21,7 +21,7 @@
       <h4 class="uk-flex uk-flex-center uk-flex-middle">It looks like you don't have any projects. Click the button below to get started.</h4>
   {% endif %}
 
-  <button uk-toggle="target: #new-project" class="uk-button uk-button-default uk-position-bottom-center rform buttons" type="button">Add a new project?</button>
+  <button uk-toggle="target: #new-project" class="uk-button uk-button-default uk-flex rform buttons">Add a new project?</button>
 
 </div>
 
