@@ -4,4 +4,14 @@
 <h1>How is your world organized?</h1>
 <hr />
 
+{% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+            <p>What events are most important to the state of the world when the story begins? How old is the country? How old is the town? Have there been wars, famines, or plagues recently? What does it look like when things ae going well? How does anyone know these things? How is knowledge of technology passed down?</p>   
+        </div>
+        <button id=showQuestions>+</button>
+        <button id=hideQuestions>-</button>
+    </div>
+{% endif %}
+
 {% endblock %}

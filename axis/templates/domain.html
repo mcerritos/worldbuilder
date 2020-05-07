@@ -4,14 +4,14 @@
     {% block specific %}
     {% endblock %}
 
-    {% if user.is_authenticated %}
+    <!-- {% if user.is_authenticated %}
     <div class=".uk-card uk-card-default card">
         <h5 class="uk-flex uk-flex-center uk-flex-middle">Questions</h5>
         {% for question in questions %}
             <p class="uk-flex uk-flex-center uk-flex-middle"> Description: {{ question.text }}</p>
         {% endfor %} 
     </div>
-    {% endif %}
+    {% endif %} -->
     
     <div class=".uk-card uk-card-default card">
         {% if posts %}

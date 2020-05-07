@@ -4,4 +4,14 @@
 <h1>Everybody get up, it's time to slam now.</h1>
 <hr />
 
+{% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+            <p>When was the last war? Who was it against? What kinds of armor are available, and how commonly are they used? What weapons are available? What's the state of medical etchnology? What is the status of soldiers in society?</p>   
+        </div>
+        <button id=showQuestions>+</button>
+        <button id=hideQuestions>-</button>
+    </div>
+{% endif %}
+
 {% endblock %}

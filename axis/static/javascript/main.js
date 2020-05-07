@@ -37,4 +37,24 @@ function setPostId (event) {
     formtext.value = document.querySelector('p[class*="' + postId +'"]').textContent;
 }
 
+// toggle questions
+let questions = document.getElementById('questions')
+let plusButton = document.getElementById('showQuestions');
+let minusButton = document.getElementById('hideQuestions');
+minusButton.addEventListener('click', hideQuestions);
+plusButton.addEventListener('click', showQuestions);
+
+function hideQuestions() {
+    questions.style.display = "none";
+    minusButton.style.display = "none";
+    plusButton.style.display = "inline-block";
+}
+
+function showQuestions() {
+    questions.style.display = "block";
+    minusButton.style.display = "inline-block";
+    plusButton.style.display = "none";
+  
+}
+
 

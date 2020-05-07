@@ -4,4 +4,14 @@
 <h1>Upload your maps here!</h1>
 <hr />
 
+    {% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+           <p>What resources are commonly available from the landscape? Are there bodies of water for fishing? Are there forests or mountains? What methods of transportation are there, and how fast do they go? What obstacles are there, and how do people get around them?</p>
+        <button id=showQuestions>+</button>
+        <button id=hideQuestions>-</button>
+        </div>
+    </div>
+    {% endif %}
+
 {% endblock %}

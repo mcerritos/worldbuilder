@@ -4,4 +4,14 @@
 <h1>is god real? discuss.</h1>
 <hr />
 
+{% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+            <p>What religions are most popular in this world? How are they viewed? Are they centralized or decentralized? What kind of superstitions do people have? Is magic real? Do people think magic is real? How do people explain the creation of the world? Is there an afterlife? </p>   
+        </div>
+        <button id=showQuestions>+</button>
+        <button id=hideQuestions>-</button>
+    </div>
+    {% endif %}
+
 {% endblock %}
