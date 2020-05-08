@@ -11,6 +11,12 @@ body {
 h1, h2, h3, h4, h5, h6, p {
     font-family: 'Inknut Antiqua', serif;
 }
+
+h4{
+    border-bottom:  #D79922 solid;
+    margin: 0 auto;
+    max-width: 90vw;
+}
   
 main {
     flex: 1 0 auto;
@@ -30,13 +36,20 @@ footer {
 }
 
 .card {
-    border: #D79922 solid;
+    border-left: #D79922 solid;
+    border-bottom: #D79922 solid;
     background-color: white;
     margin: 2vw;
     padding: 1vw;
     display: flex;
     flex-direction: column;
 
+}
+
+.post {
+    border-left: #D79922;
+    background-color: white;
+    flex-direction: column;
 }
 
 /* register styles */
@@ -152,7 +165,26 @@ footer {
     margin-top: 0;
 }
 
-/* 
-<li><a href="{% url 'culture' project_name={{current_project.name}} %}">Culture</a></li> 
-*/
+/* pictures styles */
+
+#gallery{
+    display: flex;
+    border: #D79922 solid;
+    background-color: white;
+    margin: 2vw;
+    padding: 1vw;
+}
+
+.pictures {
+    max-width: 25vw;
+    height: auto;
+    margin: 1vw 2vw;
+}
+
+/* profile styles */
+
+#npbutton {
+    margin: auto;
+    margin-bottom: 7vh;
+}
 

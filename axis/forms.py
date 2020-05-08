@@ -14,5 +14,5 @@ class PostForm(ModelForm):
 class PictureForm(ModelForm):
   class Meta:
     model= Picture
-    fields =['image']
+    fields =['image', 'project', 'user']
 

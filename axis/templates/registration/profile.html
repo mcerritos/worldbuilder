@@ -5,7 +5,7 @@
   <h3 class="uk-flex uk-flex-center uk-flex-middle rform">Welcome to your profile page, {{user.username}}!</h3>
 
   {% if projects %}
-  <h4 class="uk-flex uk-flex-center uk-flex-middle">Pick a project to work on.</h4>
+  <h4 class="uk-flex-center uk-flex-middle">Projects</h4>
     {% for project in projects %}
       <div class=".uk-card uk-card-default card">
         <div class=".uk-card-body">
@@ -20,10 +20,21 @@
   {% else %}
       <h4 class="uk-flex uk-flex-center uk-flex-middle">It looks like you don't have any projects. Click the button below to get started.</h4>
   {% endif %}
+  <button id="npbutton" uk-toggle="target: #new-project" class="uk-button uk-button-default uk-flex rform buttons">Add a new project?</button>
 
-  <button uk-toggle="target: #new-project" class="uk-button uk-button-default uk-flex rform buttons">Add a new project?</button>
+  {% if pictures %}
+  <h4 class="uk-flex-center uk-flex-middle">Pictures</h4>
+  <div class=".uk-card uk-card-default" id="gallery">
+    {% for picture in pictures %} 
+        <img class=" pictures" src="{{ picture.image.url }}" /> 
+        <button class="buttons">Delete Image</button>
+    {% endfor %} 
+  </div>
+  {% endif %}
 
 </div>
+
+
 
 <!-- new project modal -->
 <div id="new-project" uk-modal>

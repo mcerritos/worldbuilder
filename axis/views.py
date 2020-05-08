@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Project, Profile, Post, Picture, Warfare, Culture, Government, Religion, Question, Geography
+from .models import Project, Profile, Post, Picture, Warfare, Culture, Government, Religion, Question, Geography, History
 from .forms import ProjectForm, PostForm, PictureForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -58,7 +58,7 @@ def createNewProject(project_form, request, populated):
   profile = Profile.objects.get(user=request.user)
   profile.current_project = new_project
   profile.save()
-      
+    
   return redirect('profile')
 
 ################################# domain pages
@@ -72,7 +72,7 @@ def culture(request, project_name):
     handlePost(request, c, "culture")
   
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id,}
   return render(request, 'domains/culture.html', context )
 
 def government(request, project_name):
@@ -89,7 +89,17 @@ def government(request, project_name):
   return render(request, 'domains/government.html', context)
 
 def history(request, project_name):
-    return render(request, 'domains/history.html')
+  project_id = getCurrentProject(request, project_name)
+  hist = History.objects.get(project=project_id)
+  questions = Question.objects.filter(history=hist).all()
+  posts = Post.objects.filter(history=hist).all()
+
+  if request.method == 'POST':
+    handlePost(request, hist, "history")
+    
+  post_form = PostForm()
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
+  return render(request, 'domains/history.html', context)
 
 def religion(request, project_name):
   project_id = getCurrentProject(request, project_name)
@@ -112,18 +122,20 @@ def geography(request, project_name):
 
   #try printing request.files
   if request.method == 'POST' and request.FILES:
-    form = PictureForm(request.POST, request.FILES)
-    print(form)
-    if form.is_valid(): 
+    data = {'user':request.user,'project': project_id, 'domain': "Geography"}
+    form = PictureForm(data, request.FILES)
+    if form.is_valid():
         form.save() 
+        print(form)
         return redirect("domains/geography/") 
 
-  if request.method == 'POST':
-    handlePost(request, gov, "government")
+  # if request.method == 'POST':
+  #   handlePost(request, geo, "geography")
     
   post_form = PostForm()
-  picture_form = PictureForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form}
+  picture_form = PictureForm(initial={'user':request.user,'project': project_id})
+  pictures= Picture.objects.filter(project=project_id).filter(domain="Geography")
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form, 'pictures': pictures}
   return render(request, 'domains/geography.html', context)
 
 def warfare(request, project_name):
@@ -161,6 +173,7 @@ def profile(request):
   error_message = ''
   project_id = getCurrentProject(request, "placeholder")
   projects = Project.objects.filter(users=request.user)
+  pictures= Picture.objects.filter(project=project_id).filter(domain="Geography")
   
   # project creation if posted
   if request.method == 'POST':
@@ -173,7 +186,7 @@ def profile(request):
   else:
     project_form = ProjectForm()
   
-  return render(request, 'registration/profile.html', { 'projects': projects, 'project_form': project_form, 'error_message': error_message, 'current_project': project_id })
+  return render(request, 'registration/profile.html', { 'projects': projects, 'project_form': project_form, 'error_message': error_message, 'current_project': project_id, 'pictures':pictures })
 
 @login_required
 def project_delete(request, project_id):
