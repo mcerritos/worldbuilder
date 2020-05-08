@@ -33,7 +33,7 @@ def resources(request):
   return render(request, 'resources.html', {'current_project': project_id})
 ### functions to handle functionality that is the same across different routes
 
-domains = [Culture, Warfare, Government, Religion] #taking out non-modeled domains hist and geo
+domains = [Culture, Warfare, Government, Religion, Geography] # add hist to this
 
 def handlePost(request, domain, d_name):
   post_form = PostForm(request.POST)
@@ -48,7 +48,7 @@ def handlePost(request, domain, d_name):
 
 def getCurrentProject(request, project_name):
   if not request.user.is_authenticated:
-    project_id= Project.objects.get(name=project_name)
+    project_id= placeholder
   else: 
     profile = Profile.objects.get(user=request.user)
     project_id = profile.current_project
@@ -58,7 +58,13 @@ def createNewProject(project_form, request, populated):
   if populated:
     new_project = project_form.save()
   else:
-    new_project = Project.objects.create()
+    try:
+      new_project = Project.objects.create(name=request.user.username, current=True)
+    except:
+      number = Project.objects.filter(users=request.user).count()
+      number += 1
+      project_name = "Project " + str(number)
+      new_project = Project.objects.create(name=project_name, current=True)
   
   new_project.users.add(request.user)
   new_project.save()
@@ -137,7 +143,6 @@ def geography(request, project_name):
   questions = Question.objects.filter(geography=geo).all()
   posts = Post.objects.filter(geography=geo).all()
 
-  #try printing request.files
   if request.method == 'POST' and request.FILES:
     data = {'user':request.user,'project': project_id, 'domain': "Geography"}
     form = PictureForm(data, request.FILES)
@@ -181,7 +186,8 @@ def signup(request):
     else:
       error_message = 'Invalid sign up - try again'
   form = UserCreationForm()
-  context = {'form': form, 'error_message': error_message}
+  project_id = getCurrentProject(request, "anonymous")
+  context = {'form': form, 'error_message': error_message, 'current_project': project_id}
   return render(request, 'registration/signup.html', context)
 
 #################################### project crud + profile
