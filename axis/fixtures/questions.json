@@ -1,0 +1,45 @@
+[{
+    "model": "axis.question",
+    "fields" : {
+        "text": "What arts are valued by this society? What instruments are available for music? What ingredients are available for cooking? What materials are available for painting, architecture, and sculpture? What styles of music are popular?",
+        "domain": "Culture"
+    }
+}, 
+{
+    "model": "axis.question",
+    "fields" : {
+        "text": "What resources are commonly available from the landscape? Are there bodies of water for fishing? Are there forests or mountains? What methods of transportation are there, and how fast do they go? What obstacles are there, and how do people get around them?",
+        "domain": "Geography"
+    }
+},
+{
+    "model": "axis.question",
+    "fields" : {
+        "text": "What is the form of government? Anarchy, Monarchy, Theocracy, Feudalism, Democracy? Who benefits from the current system and wants to keep it in place? Who is oppressed by the current system? How is the exchange of power handled? Are things decentralized or centralized?",
+        "domain": "Government"
+    }
+},
+{
+    "model": "axis.question",
+    "fields" : {
+        "text": "What events are most important to the state of the world when the story begins? How old is the country? How old is the town? Have there been wars, famines, or plagues recently? What does it look like when things ae going well? How does anyone know these things? How is knowledge of technology passed down?",
+        "domain": "History"
+    }
+},
+{
+    "model": "axis.question",
+    "fields" : {
+        "text": "What religions are most popular in this world? How are they viewed? Are they centralized or decentralized? What kind of superstitions do people have?",
+        "domain": "Religion"
+    }
+},
+{
+    "model": "axis.question",
+    "fields" : {
+        "text": "When was the last war? Who was it against? What kinds of armor are available, and how commonly are they used? What weapons are available? What's the state of medical etchnology? What is the status of soldiers in society?",
+        "domain": "Warfare"
+    }
+}]
+
+
+

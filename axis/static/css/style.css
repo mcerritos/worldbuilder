@@ -1,8 +1,21 @@
+/* base styles */
+
 body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    background-color: #EFE2BA;
+    background-color: rgb(243, 235, 210);
+    font-family: 'Inknut Antiqua', serif;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-family: 'Inknut Antiqua', serif;
+}
+
+h4{
+    border-bottom:  #D79922 solid;
+    margin: 0 auto;
+    max-width: 90vw;
 }
   
 main {
@@ -10,32 +23,168 @@ main {
 }
 
 footer {
-    padding-top: 0;
-    text-align: right;
-    background-color: #F13C20;
+    padding-top: 1vh;
+    text-align: center;
+    background-color: #c5cbe3;
+    color: #D79922;
 }
 
+.buttons {
+    border-color: #D79922;
+    background-color: #c5cbe3;
+    align-self: center;
+}
+
+.card {
+    border-left: #D79922 solid;
+    border-bottom: #D79922 solid;
+    background-color: white;
+    margin: 2vw;
+    padding: 1vw;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.post {
+    border-left: #D79922;
+    background-color: white;
+    flex-direction: column;
+}
+
+/* register styles */
+
+.auth {
+    margin: 5vh;
+    border: #D79922 solid;
+    background-color: white;
+}
+.auth >h1 {
+    margin-top: 3vh;
+}
+.rform {
+    margin-top: 3vh;
+    margin-bottom: 4vh;
+}
+
+/* header styles */
+
 .bg-img {
-    /* The image used */
     background-image:url('/static/sunsetbg.png');
-  
-    min-height: 15vh;
-  
-    /* Center and scale the image nicely */
+    min-height: 16vh;
     background-position: center;
     background-repeat: no-repeat;
-    /* background-size: cover; */
-  
-    /* Needed to position the navbar */
     position: relative;
   }
 
-#nv {
-    background-color: #4056A1 ;
+#greeting{
+    background-color: #EFE2BA;
+    padding: 1vh;
+    border-radius: 25px;
+    margin-top: -3vh;
+    
 }
 
- a {
+.nav_pic_container {
+    position: absolute;
+    margin-top: -10vh;
+    margin-left: 2vw;
+    width: auto;
+}
+
+.topnav  {
+    overflow: hidden;
+    background-color:  rgb(106, 82, 150);
     color: #D79922;
+    border-radius: 25px;
+    margin-top: -1vh ;
+    margin-left: 3vh;
+}
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 1vh 1vw;
+    text-decoration: none;
+    font-size: 17px;
+}
+  
+.topnav a:hover {
+    background-color: #D79922;
+    color: #f2f2f2;
+}
+
+#nv {
+    background-color: rgb(106, 82, 150);
+    border-bottom: solid #d79922;
+}
+
+.bottomnav > li > a {
+    color: #f2f2f2;
+    padding: .5vh 3vw;
     font-weight: bold;
+    min-height: 5vh;
+    
+}
+
+.bottomnav > li > a:hover {
+    background-color: #D79922;
+    color: #f2f2f2;
+}
+
+/* modal styles  */
+
+#projectUpdateDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#updateDescription {
+    height: auto;
+    width: auto;
+}
+
+/* questions styles */
+
+#showQuestions {
+    display: none;
+    max-width: 10vw;
+}
+
+#hideQuestions {
+    max-width: 10vw;
+}
+
+/* summary styles */
+#domainHeader {
+    margin-bottom: 0;
+}
+#projectSubtitle {
+    margin-top: 0;
+}
+
+/* pictures styles */
+
+#gallery{
+    display: flex;
+    border: #D79922 solid;
+    background-color: white;
+    margin: 2vw;
+    padding: 1vw;
+}
+
+.pictures {
+    max-width: 25vw;
+    height: auto;
+    margin: 1vw 2vw;
+}
+
+/* profile styles */
+
+#npbutton {
+    margin: auto;
+    margin-bottom: 7vh;
 }
 

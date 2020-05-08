@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="auth .uk-container-xlarge" >
+  <h3 class="uk-flex uk-flex-center uk-flex-middle rform">Welcome to your profile page, {{user.username}}!</h3>
+
+  {% if projects %}
+  <h4 class="uk-flex-center uk-flex-middle">Projects</h4>
+    {% for project in projects %}
+      <div class=".uk-card uk-card-default card">
+        <div class=".uk-card-body">
+          <span class=".uk-card-title uk-flex uk-flex-center uk-flex-middle q{{project.pk}}">{{ project.name }}</span>
+          <p class="uk-flex uk-flex-center uk-flex-middle q{{project.pk}}">{{ project.description }}</p>
+          <a href="/project/{{project.pk}}/delete" class="uk-button uk-button-default buttons">Delete Project</a>
+          <a uk-toggle="target: #update-project" data-projectid="{{project.pk}}" 
+           class="openUpdateModal uk-button uk-button-default buttons" >Update Project</a>
+        </div>
+      </div>
+    {% endfor %} 
+  {% else %}
+      <h4 class="uk-flex uk-flex-center uk-flex-middle">It looks like you don't have any projects. Click the button below to get started.</h4>
+  {% endif %}
+  <button id="npbutton" uk-toggle="target: #new-project" class="uk-button uk-button-default uk-flex rform buttons">Add a new project?</button>
+
+  {% if pictures %}
+  <h4 class="uk-flex-center uk-flex-middle">Pictures</h4>
+  <div class=".uk-card uk-card-default" id="gallery">
+    {% for picture in pictures %} 
+        <div class=".uk-card uk-card-default">
+          <img class="pictures" src="{{ picture.image.url }}" /> 
+          <a href="/picture/{{picture.pk}}/delete" id="deletePicture" class="uk-button uk-button-default buttons">Delete Image</a>
+        </div>
+    {% endfor %} 
+  </div>
+  {% endif %}
+
+</div>
+
+
+
+<!-- new project modal -->
+<div id="new-project" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Create a new world...</h2>
+        <form action="{% url 'profile' %}" method="POST">
+          {% csrf_token %}
+          {{ project_form.as_p }}
+          <input type="submit" class="btn buttons" value="Add Project">
+        </form>
+        {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+    </div>
+</div>
+
+<!-- update project modal -->
+<div id="update-project" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body" id="projectUpdateDiv">
+      <h2>Update your project?</h2> 
+      <!-- the url here is just a placeholder -->
+      <form name="projectUpdateForm" action="{% url 'profile' %}" method="POST">
+        {% csrf_token %}
+          <label for="name">Project name:</label><br>
+          <input type="text" id="updateName" name="name"><br>
+          <label for="description">Description:</label><br>
+          <textarea rows="20" cols="30" maxlength="500" id="updateDescription" name="description"></textarea><br>
+          <input type="checkbox" id="current" name="current" value="True">
+          <label for="current"> Make this the current project? </label><br>
+        <input type="submit" class="btn buttons" id="updateButton">
+      </form>
+      {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'domain.html' %}
+{% block specific %}
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">Government</h5> <hr />
+        <h5 id="projectSubtitle">{{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div>
+
+{% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+            <p>What events are most important to the state of the world when the story begins? How old is the country? How old is the town? Have there been wars, famines, or plagues recently? What does it look like when things ae going well? How does anyone know these things? How is knowledge of technology passed down?</p>   
+        </div>
+        <button class="buttons" id=showQuestions>+</button>
+        <button class="buttons" id=hideQuestions>-</button>
+    </div>
+{% endif %}
+
+{% endblock %}

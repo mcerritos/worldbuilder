@@ -1,0 +1,19 @@
+{% extends 'domain.html' %}
+{% block specific %}
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">Warfare</h5> <hr />
+        <h5 id="projectSubtitle">{{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div>
+    
+{% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+            <p>When was the last war? Who was it against? What kinds of armor are available, and how commonly are they used? What weapons are available? What's the state of medical etchnology? What is the status of soldiers in society?</p>   
+        </div>
+        <button class="buttons" id=showQuestions>+</button>
+        <button class="buttons" id=hideQuestions>-</button>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'domain.html' %}
+{% block specific %}
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">Religion</h5> <hr />
+        <h5 id="projectSubtitle">{{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div>
+
+{% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+            <p>What religions are most popular in this world? How are they viewed? Are they centralized or decentralized? What kind of superstitions do people have? Is magic real? Do people think magic is real? How do people explain the creation of the world? Is there an afterlife? </p>   
+        </div>
+        <button class="buttons" id=showQuestions>+</button>
+        <button class="buttons" id=hideQuestions>-</button>
+    </div>
+    {% endif %}
+
+{% endblock %}

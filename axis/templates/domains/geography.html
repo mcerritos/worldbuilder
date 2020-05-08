@@ -1,0 +1,44 @@
+{% extends 'domain.html' %}
+{% block specific %}
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">Geography</h5> <hr />
+        <h5 id="projectSubtitle"> {{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div>
+
+    {% if pictures %}
+    <div class=".uk-card uk-card-default card">
+        <h4 class="uk-flex-center uk-flex-middle">Maps and Sundry</h4>
+        <div class=".uk-card uk-card-default" id="gallery">
+            {% for picture in pictures %} 
+                <img class=" pictures" src="{{ picture.image.url }}" /> 
+                {% if user.username == post.author.username %}
+                <button class="buttons">Delete Image</button>
+                {% endif %}
+            {% endfor %} 
+        </div>
+    </div>
+    {% endif %}
+
+        {% if user.is_authenticated %}
+        <div class=".uk-card uk-card-default card">
+            <div id="questions">
+            <p>What resources are commonly available from the landscape? Are there bodies of water for fishing? Are there forests or mountains? What methods of transportation are there, and how fast do they go? What obstacles are there, and how do people get around them?</p>
+            </div>
+            <button class="buttons" id=showQuestions>+</button>
+            <button class="buttons" id=hideQuestions>-</button>
+        </div>
+
+    <div class=".uk-card uk-card-default card">
+        <h5>Upload a map here!</h5>
+        <form method = "post" enctype="multipart/form-data"> 
+            {% csrf_token %} 
+            <input type="file" name="image" accept="image/png, image/jpeg">
+            {{ form.errors }}
+            {{ form.non_field_errors }}
+            <button type="submit">Upload</button> 
+        </form>
+    </div>
+    {% endif %}
+
+{% endblock %}

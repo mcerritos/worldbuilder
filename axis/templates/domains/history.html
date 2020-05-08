@@ -1,0 +1,20 @@
+{% extends 'domain.html' %}
+{% block specific %}
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">History</h5> <hr />
+        <h5 id="projectSubtitle">{{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class=".uk-card uk-card-default card">
+            <div id="questions">
+                <p>What is the form of government? Anarchy, Monarchy, Theocracy, Feudalism, Democracy? Who benefits from the current system and wants to keep it in place? Who is oppressed by the current system? How is the exchange of power handled? Are things decentralized or centralized?</p>   
+            </div>
+            <button class="buttons" id=showQuestions>+</button>
+            <button class="buttons"id=hideQuestions>-</button>
+        </div>
+    {% endif %}
+
+    
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Add the login form -->
+<div class="auth .uk-container-medium" >
+    <div class="uk-flex uk-flex-center uk-flex-middle">
+        <form class="rform" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" name="next" value="{{ next }}">
+            <input type="submit" class="btn" value="login">
+            
+        </form>
+    </div>
+</div>
+
+{% endblock %}

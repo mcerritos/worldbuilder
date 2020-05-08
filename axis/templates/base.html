@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/css/uikit.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/js/uikit-icons.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Inknut+Antiqua&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
     <title>Worldbuilder</title>
@@ -19,25 +20,57 @@
 <body>
   <header>
     <div class="bg-img"></div>
+    {% if user.is_authenticated %}
+      <div class="nav_pic_container">
+        <div class="topnav">
+          <a href="{% url 'profile' %}">Profile</a>
+          <a href="{% url 'logout' %}">Log Out</a>
+        </div>
+      </div>
+    {% else %}
+    <div class="nav_pic_container">
+      <div class="topnav">
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'signup' %}">Register</a>
+      </div>
+    {% endif %}
+    </div>
 
     <nav id="nv" class=".uk-navbar-container" uk-navbar>
-      <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-          <li><a href="/" >Worldbuilder</a></li>
-          <li><a href="/geography">Geography</a></li>
+      <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav bottomnav">
+          <li><a href="/">Worldbuilder</a></li>
+          <li><a href="/">{{current_project.name}}</a></li>
         </ul>
       </div>
+      {% if user.is_authenticated %}
+      <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav bottomnav">
+          <li><a href="{% url 'culture' current_project.name %}">Culture</a></li> 
+          <li><a href="{% url 'geography' current_project.name %}">Geography</a></li>
+          <li><a href="{% url 'government' current_project.name %}">Government</a></li>
+          <li><a href="{% url 'history' current_project.name %}">History</a></li>
+          <li><a href="{% url 'religion' current_project.name%}">Religion</a></li>
+          <li><a href="{% url 'warfare' current_project.name%}">Warfare</a></li>
+        </ul>
+      </div>
+      {% endif %}
     </nav>
  
   </header>
 
-  <main class="container">
+  <main id="page_content" class="container uk-inline">
     {% block content %}
     {% endblock %}
   </main>
 
   <footer class="page-footer">
-    <div class="right">All Rights Reserved; Worldbuilder 2020 &nbsp;</div>
+    <div id="footerCP" class="right">All Rights Reserved; Worldbuilder 2020 &nbsp;</div> 
+        <a href="{% url 'about' %}">About   |</a> 
+        <a href="{% url 'resources' %}">|   Resources</a>
   </footer>
 </body>
+{% load static %}
+  <script defer type="text/javascript" src="{% static "javascript/main.js" %}"></script>
+  
 </html>

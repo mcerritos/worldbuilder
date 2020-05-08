@@ -1,0 +1,20 @@
+{% extends 'domain.html' %}
+{% block specific %}
+
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">Culture</h5> <hr />
+        <h5 id="projectSubtitle">{{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div> 
+
+    {% if user.is_authenticated %}
+    <div class=".uk-card uk-card-default card">
+        <div id="questions">
+            <p>What arts are valued by this society? What instruments are available for music? What ingredients are available for cooking? What materials are available for painting, architecture, and sculpture? What styles of music are popular?</p>   
+        </div>
+        <button class="buttons" id=showQuestions>+</button>
+        <button class="buttons" id=hideQuestions>-</button>
+    </div>
+    {% endif %}
+    
+{% endblock %}
