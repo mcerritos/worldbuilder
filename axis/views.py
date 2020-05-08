@@ -6,9 +6,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+placeholder = Project.objects.create()
+
 def home(request):
   if not request.user.is_authenticated:
-    project_id = { name: ""}
+    project_id = placeholder
   else: 
     profile = Profile.objects.get(user=request.user)
     project_id = profile.current_project
