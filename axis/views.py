@@ -14,6 +14,21 @@ def home(request):
     project_id = profile.current_project
   return render(request, 'homepage.html', {'current_project': project_id} )
 
+def about(request):
+  if not request.user.is_authenticated:
+    project_id = { name: ""}
+  else: 
+    profile = Profile.objects.get(user=request.user)
+    project_id = profile.current_project
+  return render(request, 'about.html', {'current_project': project_id})
+
+def resources(request):
+  if not request.user.is_authenticated:
+    project_id = { name: ""}
+  else: 
+    profile = Profile.objects.get(user=request.user)
+    project_id = profile.current_project
+  return render(request, 'resources.html', {'current_project': project_id})
 ### functions to handle functionality that is the same across different routes
 
 domains = [Culture, Warfare, Government, Religion] #taking out non-modeled domains hist and geo
@@ -129,13 +144,13 @@ def geography(request, project_name):
         print(form)
         return redirect("domains/geography/") 
 
-  # if request.method == 'POST':
-  #   handlePost(request, geo, "geography")
+  elif request.method == 'POST':
+    handlePost(request, geo, "geography")
     
   post_form = PostForm()
   picture_form = PictureForm(initial={'user':request.user,'project': project_id})
   pictures= Picture.objects.filter(project=project_id).filter(domain="Geography")
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form, 'pictures': pictures}
+  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form, 'pictures': pictures }
   return render(request, 'domains/geography.html', context)
 
 def warfare(request, project_name):
@@ -237,4 +252,9 @@ def post_update(request, post_id, destination):
     form = ProjectForm(instance=project)
     
   return render(request, 'registration/profile.html', {'form': form})
+
+@login_required
+def picture_delete(request, picture_id):
+	Picture.objects.get(id=picture_id).delete()
+	return redirect('profile')
 

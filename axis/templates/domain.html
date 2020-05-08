@@ -1,11 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class=".uk-card uk-card-default card">
-        <h3 id="domainHeader">Domain title</h5> <hr />
-        <h5 id="projectSubtitle">{{current_project.name}}</h5>
-        <p>A summary of text about the domain</p>
-    </div>
-
+  
     {% block specific %}
     {% endblock %}
     
@@ -27,7 +22,7 @@
             {% endfor %} 
         {% else %}
             <div>
-                <p>Looking for inspiration? Check out the questions.</p>
+                <p class="uk-flex-center uk-flex-middle">Looking for inspiration? Check out the questions.</p>
             </div>
         {% endif %}
         <button uk-toggle="target: #new-post" 

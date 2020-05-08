@@ -1,6 +1,10 @@
 {% extends 'domain.html' %}
 {% block specific %}
-
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">History</h5> <hr />
+        <h5 id="projectSubtitle">{{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div>
 
     {% if user.is_authenticated %}
         <div class=".uk-card uk-card-default card">

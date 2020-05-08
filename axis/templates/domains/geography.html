@@ -1,14 +1,22 @@
 {% extends 'domain.html' %}
 {% block specific %}
+    <div class=".uk-card uk-card-default card">
+        <h3 id="domainHeader">Geography</h5> <hr />
+        <h5 id="projectSubtitle"> {{current_project.name}}</h5>
+        <p>A summary of text about the domain</p>
+    </div>
 
     {% if pictures %}
-    <div class=".uk-card uk-card-default" id="gallery">
-        {% for picture in pictures %} 
-            <img class=" pictures" src="{{ picture.image.url }}" /> 
-            {% if user.username == post.author.username %}
-            <button class="buttons">Delete Image</button>
-            {% endif %}
-        {% endfor %} 
+    <div class=".uk-card uk-card-default card">
+        <h4 class="uk-flex-center uk-flex-middle">Maps and Sundry</h4>
+        <div class=".uk-card uk-card-default" id="gallery">
+            {% for picture in pictures %} 
+                <img class=" pictures" src="{{ picture.image.url }}" /> 
+                {% if user.username == post.author.username %}
+                <button class="buttons">Delete Image</button>
+                {% endif %}
+            {% endfor %} 
+        </div>
     </div>
     {% endif %}
 

@@ -23,7 +23,7 @@ main {
 }
 
 footer {
-    padding-top: 0;
+    padding-top: 1vh;
     text-align: center;
     background-color: #c5cbe3;
     color: #D79922;

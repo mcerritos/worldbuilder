@@ -25,7 +25,7 @@ class Post(models.Model):
     text = models.TextField(max_length=2000)
     
     def __str__(self):
-        return self.title + " by " + self.author.username 
+        return self.title + " by " + self.author 
 
 class Picture(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
