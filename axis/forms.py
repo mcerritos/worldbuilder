@@ -9,7 +9,7 @@ class ProjectForm(ModelForm):
 class PostForm(ModelForm):
   class Meta:
     model = Post
-    fields = ['text', 'title']
+    fields = ['text', 'title', 'position']
 
 class PictureForm(ModelForm):
   class Meta:

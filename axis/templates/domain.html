@@ -7,7 +7,7 @@
     <div class=".uk-card uk-card-default card">
         {% if posts %}
             {% for post in posts %}
-            <div class=".uk-card uk-card-default post">
+            <div class=".uk-card uk-card-default post {{post.position}}">
                 <div class=".uk-card-body">
                 <h6 class=".uk-card-title uk-flex uk-flex-center uk-flex-middle p{{post.pk}}">{{ post.title }}</h5>
                 <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }} </p>

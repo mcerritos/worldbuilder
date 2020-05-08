@@ -1,0 +1,8 @@
+[{
+    "model": "axis.project",
+    "fields" : {
+        "name": "Anonymous",
+        "description": "This database collects orphaned posts on still active-projects."
+    }
+}]
+

@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-placeholder = Project.objects.create()
+placeholder = Project.objects.get(name="Anonymous")
 
 def home(request):
   if not request.user.is_authenticated:
@@ -18,7 +18,7 @@ def home(request):
 
 def about(request):
   if not request.user.is_authenticated:
-    project_id = { name: ""}
+    project_id = placeholder
   else: 
     profile = Profile.objects.get(user=request.user)
     project_id = profile.current_project
@@ -26,7 +26,7 @@ def about(request):
 
 def resources(request):
   if not request.user.is_authenticated:
-    project_id = { name: ""}
+    project_id = placeholder
   else: 
     profile = Profile.objects.get(user=request.user)
     project_id = profile.current_project
@@ -83,7 +83,7 @@ def culture(request, project_name):
   project_id = getCurrentProject(request, project_name)
   c = Culture.objects.get(project=project_id)
   questions = Question.objects.filter(culture=c).all()
-  posts = Post.objects.filter(culture=c).all()
+  posts = Post.objects.filter(culture=c).filter(position="Ssc")
 
   if request.method == 'POST':
     handlePost(request, c, "culture")

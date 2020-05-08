@@ -1,1 +1,1 @@
-web: gunicorn worldbuilderwiki.wsgi
+web: gunicorn worldbuilder.wsgi

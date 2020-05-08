@@ -1,7 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 
-<h1>This is the about page.</h1>
-<hr />
+<div class=".uk-card uk-card-default card" >
+    <h1>Worldbuilder: behind the wiki</h1> 
+    <a href="https://github.com/mcerritos/worldbuilder">Find Worldbuilder on GitHub</a>
+    <hr />
+
+    <div class=".uk-card uk-card-default card" >
+        <div class=".uk-card-body">
+            <h5 class="uk-card-title">the tool</h5>
+            <p>Worldbuilder is a tool for writers, dungeon masters, or anyone looking to keep track of a world of their own creation. A world is a wide, complicated thing to keep track of, and Worldbuilder allows for easy data storage, as well as providing questions and links to aspiring worldbuilders to help keep the inspiration flowing. </p>
+            <p>Worldbuilder was built using Javascript, Django, UIkit, Python, and Javascript. It runs on a PostgreSQL server.</p>
+        </div>
+    </div>
+
+    <div class=".uk-card uk-card-default card" >
+        <h5 class="uk-card-title">the engineer</h5>
+        <div class=".uk-card-body">
+            <p>Melody Cerritos is the software engineer behind Worldbuilder. She enjoys Django's powerful out-of-the-box features, powerful templating engine, and extensively documented features. In her spare time, she likes to write fantasy novels.</p>
+            <p>Connect with her on linkedIn or Github if you're looking to chat about writing, code writing, or just looking to make a friend. </p>
+            <a href="https://www.linkedin.com/in/melody-cerritos/" class="btn btn-outline-info">LinkedIn  |</a>
+            <a href="https://github.com/mcerritos" class="btn btn-outline-info">|  GitHub</a>
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}

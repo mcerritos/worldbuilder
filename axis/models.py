@@ -5,8 +5,14 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+POSITIONS = (
+    ('Sum', 'Summary'),
+    ('Shd', 'Section Header'),
+    ('Ssc', 'Subsection')
+)
+
 class Project(models.Model):
-    name = models.CharField(max_length=100, default="Give your project a name!")
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length= 500, default="Describe your project here.")
     users = models.ManyToManyField(User)
     current = models.BooleanField(default=False)
@@ -23,9 +29,13 @@ class Post(models.Model):
     title= models.CharField(max_length=150)
     author= models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
     text = models.TextField(max_length=2000)
+    position = models.CharField(
+        max_length=3,
+        choices=POSITIONS,
+        default=POSITIONS[2][0])
     
     def __str__(self):
-        return self.title + " by " + self.author 
+        return self.title + " by " + self.author.username 
 
 class Picture(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

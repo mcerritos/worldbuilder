@@ -46,11 +46,14 @@ footer {
 
 }
 
+/* post styles */
+
 .post {
     border-left: #D79922;
     background-color: white;
     flex-direction: column;
 }
+
 
 /* register styles */
 
@@ -186,5 +189,12 @@ footer {
 #npbutton {
     margin: auto;
     margin-bottom: 7vh;
+}
+
+/* about styles */
+
+#selfie{
+    max-width: 20vw;
+    height: auto;
 }
 
