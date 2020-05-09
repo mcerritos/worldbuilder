@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-placeholder = Project.objects.filter(name="Anonymous").first
+placeholder = Project.objects.get(name="Anonymous")
 
 def home(request):
   if not request.user.is_authenticated:
