@@ -1,5 +1,7 @@
+
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
   
     {% block specific %}
     {% endblock %}
@@ -9,9 +11,9 @@
             {% for post in posts %}
             <div class=".uk-card uk-card-default post {{post.position}}">
                 <div class=".uk-card-body">
-                <h6 class=".uk-card-title uk-flex uk-flex-center uk-flex-middle p{{post.pk}}">{{ post.title }}</h5>
+                <h4 class="uk-flex-center uk-flex-middle p{{post.pk}}">{{ post.title }}</h4>
                 <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }} </p>
-                <p class="uk-flex uk-flex-center uk-flex-middle p{{post.pk}}">Description: {{ post.text }}</p>
+                <p class="uk-flex uk-flex-center uk-flex-middle p{{post.pk}}">{{ post.text }}</p>
                 {% if user.username == post.author.username %}
                     <a href="/post/{{post.pk}}/delete" class="buttons uk-button uk-button-default">Delete Post</a>
                     <a uk-toggle="target: #update-post" class="buttons uk-button uk-button-default openUpdatePost"
@@ -43,13 +45,19 @@
 
     <!-- update post modal -->
     <div id="update-post" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body" id="projectUpdateDiv">
-            <form name="projectUpdateForm" action="{% url 'profile' %}" method="POST">
+        <div class="uk-modal-dialog uk-modal-body" id="postUpdateDiv">
+            <form name="postUpdateForm" action="{% url 'profile'}" method="POST">
             {% csrf_token %}
-                <label for="name">Title:</label><br>
-                <input type="text" id="updateTitle" name="name"><br>
+                <label for="id_title">Title:</label><br>
+                <input type="text" id="id_title" name="title"><br>
                 <label for="text">Text:</label><br>
                 <textarea rows="20" cols="30" maxlength="500" id="updateText" name="text"></textarea><br><br>
+                <label for="id_position">Position:</label>
+                <select name="position" id="id_position">
+                    <option value="Sum">Summary</option>
+                    <option value="Shd">Section Header</option>
+                    <option value="Ssc" selected="">Subsection</option>
+                </select>
             <input type="submit" class="btn buttons" id="updatePostButton">
             </form>
             {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}

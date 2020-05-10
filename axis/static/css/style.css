@@ -12,7 +12,7 @@ h1, h2, h3, h4, h5, h6, p {
     font-family: 'Inknut Antiqua', serif;
 }
 
-h4{
+h4, h6 {
     border-bottom:  #D79922 solid;
     margin: 0 auto;
     max-width: 90vw;
@@ -54,6 +54,9 @@ footer {
     flex-direction: column;
 }
 
+.postTitle {
+
+}
 
 /* register styles */
 
@@ -164,7 +167,7 @@ footer {
 #domainHeader {
     margin-bottom: 0;
 }
-#projectSubtitle {
+.projectSubtitle {
     margin-top: 0;
 }
 

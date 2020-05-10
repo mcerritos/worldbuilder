@@ -8,28 +8,26 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 placeholder = Project.objects.get(name="Anonymous")
 
-def home(request):
-  if not request.user.is_authenticated:
-    project_id = placeholder
-  else: 
+def getCurrentProject(request, project_name):
+  try: 
     profile = Profile.objects.get(user=request.user)
     project_id = profile.current_project
+    print("This is the try block.")
+  except:
+    project_id= placeholder
+    print("This is the except block.")
+  return project_id
+
+def home(request):
+  project_id = getCurrentProject(request, "placeholder")
   return render(request, 'homepage.html', {'current_project': project_id} )
 
 def about(request):
-  if not request.user.is_authenticated:
-    project_id = placeholder
-  else: 
-    profile = Profile.objects.get(user=request.user)
-    project_id = profile.current_project
+  project_id = getCurrentProject(request, "placeholder")
   return render(request, 'about.html', {'current_project': project_id})
 
 def resources(request):
-  if not request.user.is_authenticated:
-    project_id = placeholder
-  else: 
-    profile = Profile.objects.get(user=request.user)
-    project_id = profile.current_project
+  project_id = getCurrentProject(request, "placeholder")
   return render(request, 'resources.html', {'current_project': project_id})
 ### functions to handle functionality that is the same across different routes
 
@@ -46,13 +44,6 @@ def handlePost(request, domain, d_name):
   else:
     return 'Something went wrong - please enter your post again.' 
 
-def getCurrentProject(request, project_name):
-  if not request.user.is_authenticated:
-    project_id= placeholder
-  else: 
-    profile = Profile.objects.get(user=request.user)
-    project_id = profile.current_project
-  return project_id
 
 def createNewProject(project_form, request, populated):
   if populated:
@@ -89,13 +80,15 @@ def culture(request, project_name):
   project_id = getCurrentProject(request, project_name)
   c = Culture.objects.get(project=project_id)
   questions = Question.objects.filter(culture=c).all()
+  summaries = Post.objects.filter(culture=c).filter(position="Sum")
   posts = Post.objects.filter(culture=c).filter(position="Ssc")
 
   if request.method == 'POST':
     handlePost(request, c, "culture")
   
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id,}
+  context = {'questions' : questions, 'posts': posts,
+  'summaries': summaries, 'post_form': post_form, 'current_project': project_id,}
   return render(request, 'domains/culture.html', context )
 
 def government(request, project_name):
@@ -247,19 +240,23 @@ def post_delete(request, post_id):
   return redirect('profile')
 
 @login_required
-def post_update(request, post_id, destination):
+def post_update(request, domain, post_id):
+  project_id = getCurrentProject(request, "placeholder")
   post = Post.objects.get(id=post_id)
   
   if request.method == 'POST':
     form = PostForm(request.POST or None, instance=post)
     if form.is_valid():
+      print("valid")
       post_to_update = form.save()
-    return redirect('destination')
+      return redirect(domain, project_id)
+    else:
+      print(form)
       
   else:
     form = ProjectForm(instance=project)
-    
-  return render(request, 'registration/profile.html', {'form': form})
+  
+  return redirect(domain, project_id)
 
 @login_required
 def picture_delete(request, picture_id):

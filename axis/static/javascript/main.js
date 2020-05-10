@@ -11,6 +11,7 @@ function setProjectId (event) {
     projectId = event.target.getAttribute('data-projectid');
     projectId = projectId.replace('q','');
     document.projectUpdateForm.action = `project/${projectId}/update`
+    //
     let formname = document.querySelector('#updateName');
     let formdis = document.querySelector('#updateDescription');
     //
@@ -29,11 +30,11 @@ function setPostId (event) {
     postId = event.target.getAttribute('data-postid');
     console.log(postId);
     postId = postId.replace('p','');
-    document.projectUpdateForm.action = `post/${postId}/update`
+    document.postUpdateForm.action = `/culture/post/${postId}/update`
     // these functions get the information from the page and load it into the document
-    let formtitle = document.querySelector('#updateTitle');
+    let formtitle = document.querySelector('#id_title');
     let formtext = document.querySelector('#updateText');
-    formtitle.value = document.querySelector('h6[class*="' + postId +'"]').textContent;
+    formtitle.value = document.querySelector('h4[class*="' + postId +'"]').textContent;
     formtext.value = document.querySelector('p[class*="' + postId +'"]').textContent;
 }
 

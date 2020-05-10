@@ -3,8 +3,16 @@
 
     <div class=".uk-card uk-card-default card">
         <h3 id="domainHeader">Culture</h5> <hr />
-        <h5 id="projectSubtitle">{{current_project.name}}</h5>
-        <p>A summary of text about the domain</p>
+        <h5 class="projectSubtitle">{{current_project.name}}</h5>
+        {% for summary in summaries %}
+        <div class=".uk-card uk-card-default post {{post.position}}">
+            <p class="uk-flex uk-flex-center uk-flex-middle p{{post.pk}}">Description: {{ post.text }}</p>
+            {% if user.username == post.author.username %}
+                <a uk-toggle="target: #update-post" class="buttons uk-button uk-button-default openUpdatePost"
+                 data-postid="{{post.pk}}" >Update Post</a>
+            {% endif %}
+        </div>
+        {% endfor %} 
     </div> 
 
     {% if user.is_authenticated %}
