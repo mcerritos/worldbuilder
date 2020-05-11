@@ -5,7 +5,32 @@
   
     {% block specific %}
     {% endblock %}
-    
+
+    <div class=".uk-card uk-card-default card">
+        <h5>Upload an image here!</h5>
+        <form method = "post" enctype="multipart/form-data"> 
+            {% csrf_token %} 
+            <input type="file" name="image" accept="image/png, image/jpeg">
+            {{ form.errors }}
+            {{ form.non_field_errors }}
+            <button type="submit">Upload</button> 
+        </form>
+    </div>
+
+    {% if pictures %}
+    <div class=".uk-card uk-card-default card">
+        <h4 class="uk-flex-center uk-flex-middle">Images</h4>
+        <div class=".uk-card uk-card-default" id="gallery">
+            {% for picture in pictures %} 
+                <img class=" pictures" src="{{ picture.image.url }}" /> 
+                {% if user.username == post.author.username %}
+                <button class="buttons">Delete Image</button>
+                {% endif %}
+            {% endfor %} 
+        </div>
+    </div>
+    {% endif %}
+
     <div class=".uk-card uk-card-default card">
         {% if posts %}
             {% for post in posts %}

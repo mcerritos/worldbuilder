@@ -31,7 +31,7 @@ def resources(request):
   return render(request, 'resources.html', {'current_project': project_id})
 ### functions to handle functionality that is the same across different routes
 
-domains = [Culture, Warfare, Government, Religion, Geography] # add hist to this
+domains = [Culture, Warfare, Government, Religion, Geography, History]
 
 def handlePost(request, domain, d_name):
   post_form = PostForm(request.POST)
@@ -43,6 +43,13 @@ def handlePost(request, domain, d_name):
     return redirect("domains/"+d_name+"/")
   else:
     return 'Something went wrong - please enter your post again.' 
+
+def handlePicture (request, data, d_name):
+    form = PictureForm(data, request.FILES)
+    if form.is_valid():
+        form.save() 
+        print(form)
+        redirect("domains/"+d_name+"/") 
 
 
 def createNewProject(project_form, request, populated):
@@ -83,10 +90,15 @@ def culture(request, project_name):
   summaries = Post.objects.filter(culture=c).filter(position="Sum")
   posts = Post.objects.filter(culture=c).filter(position="Ssc")
 
+  if request.method == 'POST' and request.FILES:
+    data = {'user':request.user,'project': project_id, 'domain': "Culture"}
+    handlePicture(request, data, "Culture")
+
   if request.method == 'POST':
     handlePost(request, c, "culture")
   
   post_form = PostForm()
+  pictures= Picture.objects.filter(project=project_id).filter(domain="Culture")
   context = {'questions' : questions, 'posts': posts,
   'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "culture"}
   return render(request, 'domains/culture.html', context )
@@ -98,10 +110,15 @@ def government(request, project_name):
   summaries = Post.objects.filter(government=gov).filter(position="Sum")
   posts = Post.objects.filter(government=gov).filter(position="Ssc")
 
+  if request.method == 'POST' and request.FILES:
+    data = {'user':request.user,'project': project_id, 'domain': "Government"}
+    handlePicture(request, data, "Government")
+
   if request.method == 'POST':
     handlePost(request, gov, "government")
     
   post_form = PostForm()
+  pictures= Picture.objects.filter(project=project_id).filter(domain="Government")
   context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "government"}
   return render(request, 'domains/government.html', context)
 
@@ -112,10 +129,15 @@ def history(request, project_name):
   summaries = Post.objects.filter(history=hist).filter(position="Sum")
   posts = Post.objects.filter(history=hist).filter(position="Ssc")
 
+  if request.method == 'POST' and request.FILES:
+    data = {'user':request.user,'project': project_id, 'domain': "History"}
+    handlePicture(request, data, "History")
+
   if request.method == 'POST':
-    handlePost(request, hist, "history")
+    handlePost(request, hist, "History")
     
   post_form = PostForm()
+  pictures= Picture.objects.filter(project=project_id).filter(domain="History")
   context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "history"}
   return render(request, 'domains/history.html', context)
 
@@ -126,10 +148,15 @@ def religion(request, project_name):
   summaries = Post.objects.filter(religion=r).filter(position="Sum")
   posts = Post.objects.filter(religion=r).filter(position="Ssc")
 
+  if request.method == 'POST' and request.FILES:
+    data = {'user':request.user,'project': project_id, 'domain': "Religion"}
+    handlePicture(request, data, "Religion")
+
   if request.method == 'POST':
     handlePost(request, r, "religion")
   
   post_form = PostForm()
+  pictures= Picture.objects.filter(project=project_id).filter(domain="Religion")
   context = {'questions' : questions, 'posts': posts,'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "religion"}
   return render(request, 'domains/religion.html', context )
 
@@ -142,11 +169,7 @@ def geography(request, project_name):
 
   if request.method == 'POST' and request.FILES:
     data = {'user':request.user,'project': project_id, 'domain': "Geography"}
-    form = PictureForm(data, request.FILES)
-    if form.is_valid():
-        form.save() 
-        print(form)
-        return redirect("domains/geography/") 
+    handlePicture(request, data, "Geography")
 
   elif request.method == 'POST':
     handlePost(request, geo, "geography")
@@ -164,10 +187,15 @@ def warfare(request, project_name):
   summaries = Post.objects.filter(warfare=w).filter(position="Sum")
   posts = Post.objects.filter(warfare=w).filter(position="Ssc")
 
+  if request.method == 'POST' and request.FILES:
+    data = {'user':request.user,'project': project_id, 'domain': "Warfare"}
+    handlePicture(request, data, "Warfare")
+
   if request.method == 'POST':
     handlePost(request, w, "warfare")
   
   post_form = PostForm()
+  pictures= Picture.objects.filter(project=project_id).filter(domain="Warfare")
   context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "warfare"}
   return render(request, 'domains/warfare.html', context )
 
