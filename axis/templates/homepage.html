@@ -1,7 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 
-<h1>This is the home page.</h1>
-<hr />
+    <h3 class="uk-flex uk-flex-center uk-flex-middle rform">Welcome to Worldbuilder.</h3>
+    <hr />
+    <h5 class="uk-flex uk-flex-center uk-flex-middle projectSubtitle">The tool to help you create.</h5>
+
+    <div class=".uk-card" id="frontGallery">
+        <div class=".uk-card uk-flex ad front">
+            <img class="uk-flex uk-flex-center uk-flex-middle" src="{% static "/purpledice.jpg" %}" /> 
+            <p> Running a tabletop campaign?</p>
+            <p> Worldbuilder can help you keep track of npcs, store maps and other important information, and make accessing your notes as easy as the click of a button. </p>
+        </div>
+    
+        <div class=".uk-card uk-flex ad front">
+            <img class="uk-flex uk-flex-center uk-flex-middle" src="{% static "/bookofspells.jpg" %}" /> 
+            <p> Writing a book? </p>
+            <p>Worldbuilder can help you find inspiration, jot down notes for later, show off your work to your friends and even invite them to collaborate! </p>
+        </div>
+
+        <div class=".uk-card uk-flex ad front">
+            <img class="uk-flex uk-flex-center uk-flex-middle" src="{% static "/dragonbattle.jpg" %}" /> 
+            <p> Going your own path? </p>
+            <p>Whether you're making a webcomic, creating a video game, or just looking to put something together for fun, Worldbuilder can help. </p>
+        </div>
+    </div>
+    
+    <div class=".uk-container-medium front">
+        <p>Worldbuilder is a tool designed to help you store and access information that can help you as you build out your project.</p>
+
+        <p>Why not start with the resources page, or go admire a friend's work? </p>
+
+        <p>When you're done with your tour, registering is free and easy- simply click the register button and you're good to go! </p>
+    </div>
 
 {% endblock %}

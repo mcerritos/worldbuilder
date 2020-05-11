@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 h4, h6 {
-    border-bottom:  #D79922 solid;
+    border-bottom:  rgb(106, 82, 150) solid;
     margin: 0 auto;
     max-width: 90vw;
 }
@@ -46,6 +46,39 @@ footer {
 
 }
 
+/* front page styles  */
+
+#frontGallery{
+    display: flex;
+    border: #D79922 solid;
+    margin: 2vw;
+    padding: 1vw;
+}
+
+.front {
+    border: rgb(106, 82, 150) solid;
+    margin: 2vw;
+    padding: 1vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.front > p {
+    border-bottom: #D79922 solid;
+    text-align: center;
+    margin-top: 3vh;
+}
+
+.front > img {
+    max-width: 20vw;
+    height:auto;
+    margin: 0 auto;
+}
+
+.ad {
+    max-width: 25vw;
+}
+
 /* post styles */
 
 .post {
@@ -54,9 +87,6 @@ footer {
     flex-direction: column;
 }
 
-.postTitle {
-
-}
 
 /* register styles */
 
@@ -180,6 +210,8 @@ footer {
     margin: 2vw;
     padding: 1vw;
 }
+
+
 
 .pictures {
     max-width: 25vw;
