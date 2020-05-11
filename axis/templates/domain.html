@@ -6,6 +6,7 @@
     {% block specific %}
     {% endblock %}
 
+    {% if user.is_authenticated %}
     <div class=".uk-card uk-card-default card">
         <h5>Upload an image here!</h5>
         <form method = "post" enctype="multipart/form-data"> 
@@ -16,15 +17,18 @@
             <button type="submit">Upload</button> 
         </form>
     </div>
+    {% endif %}
 
     {% if pictures %}
     <div class=".uk-card uk-card-default card">
         <h4 class="uk-flex-center uk-flex-middle">Images</h4>
         <div class=".uk-card uk-card-default" id="gallery">
             {% for picture in pictures %} 
-                <img class=" pictures" src="{{ picture.image.url }}" /> 
-                {% if user.username == post.author.username %}
-                <button class="buttons">Delete Image</button>
+            <div class=".uk-card uk-card-default picard">
+                <img class="pictures" src="{{ picture.image.url }}" /> 
+                {% if user.username == picture.user.username %}
+                <a href="/picture/{{picture.pk}}/delete" id="deletePicture" class="uk-button uk-button-default buttons">Delete Image</a>
+            </div>
                 {% endif %}
             {% endfor %} 
         </div>
@@ -48,12 +52,14 @@
             </div>
             {% endfor %} 
         {% else %}
-            <div>
-                <p class="uk-flex-center uk-flex-middle">Looking for inspiration? Check out the questions.</p>
+            <div class="uk-flex">
+                <p class="uk flex uk-flex-center uk-flex-middle">Looking for inspiration? Check out the questions.</p>
             </div>
         {% endif %}
+        {% if user.is_authenticated %}
         <button uk-toggle="target: #new-post" 
         class="uk-button uk-button-default uk-flex-center uk-flex-middle buttons" >Add a new post</button>
+        {% endif %}
     </div>
 
      <!-- new post modal -->

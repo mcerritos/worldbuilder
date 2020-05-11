@@ -9,6 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 placeholder = Project.objects.get(name="Anonymous")
 
 def getCurrentProject(request, project_name):
+  if not request.user.is_authenticated: 
+    project_id = Project.objects.get(name=project_name)
+    return project_id
   try: 
     profile = Profile.objects.get(user=request.user)
     project_id = profile.current_project
@@ -19,15 +22,24 @@ def getCurrentProject(request, project_name):
   return project_id
 
 def home(request):
-  project_id = getCurrentProject(request, "placeholder")
+  if not request.user.is_authenticated: 
+    project_id = placeholder
+  else:
+    project_id = getCurrentProject(request, "placeholder")
   return render(request, 'homepage.html', {'current_project': project_id} )
 
 def about(request):
-  project_id = getCurrentProject(request, "placeholder")
+  if not request.user.is_authenticated: 
+    project_id = placeholder
+  else:
+    project_id = getCurrentProject(request, "placeholder")
   return render(request, 'about.html', {'current_project': project_id})
 
 def resources(request):
-  project_id = getCurrentProject(request, "placeholder")
+  if not request.user.is_authenticated: 
+    project_id = placeholder
+  else:
+    project_id = getCurrentProject(request, "placeholder")
   return render(request, 'resources.html', {'current_project': project_id})
 ### functions to handle functionality that is the same across different routes
 
@@ -47,9 +59,10 @@ def handlePost(request, domain, d_name):
 def handlePicture (request, data, d_name):
     form = PictureForm(data, request.FILES)
     if form.is_valid():
-        form.save() 
-        print(form)
-        redirect("domains/"+d_name+"/") 
+      new_picture = form.save() 
+      new_picture.domain = d_name 
+      new_picture = form.save() 
+      redirect("domains/"+d_name+"/") 
 
 
 def createNewProject(project_form, request, populated):
@@ -102,7 +115,7 @@ def culture(request, project_name):
   post_form = PostForm()
   pictures= Picture.objects.filter(project=project_id).filter(domain="Culture")
   context = {'questions' : questions, 'posts': posts,
-  'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "culture"}
+  'summaries': summaries, 'post_form': post_form, 'current_project': project_id,'pictures': pictures, 'domain': "culture"}
   return render(request, 'domains/culture.html', context )
 
 def government(request, project_name):
@@ -121,7 +134,7 @@ def government(request, project_name):
     
   post_form = PostForm()
   pictures= Picture.objects.filter(project=project_id).filter(domain="Government")
-  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "government"}
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'pictures': pictures,'domain': "government"}
   return render(request, 'domains/government.html', context)
 
 def history(request, project_name):
@@ -140,7 +153,7 @@ def history(request, project_name):
     
   post_form = PostForm()
   pictures= Picture.objects.filter(project=project_id).filter(domain="History")
-  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "history"}
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'pictures': pictures,'domain': "history"}
   return render(request, 'domains/history.html', context)
 
 def religion(request, project_name):
@@ -159,7 +172,7 @@ def religion(request, project_name):
   
   post_form = PostForm()
   pictures= Picture.objects.filter(project=project_id).filter(domain="Religion")
-  context = {'questions' : questions, 'posts': posts,'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "religion"}
+  context = {'questions' : questions, 'posts': posts,'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'pictures': pictures,'domain': "religion"}
   return render(request, 'domains/religion.html', context )
 
 def geography(request, project_name):
@@ -179,7 +192,7 @@ def geography(request, project_name):
   post_form = PostForm()
   picture_form = PictureForm(initial={'user':request.user,'project': project_id})
   pictures= Picture.objects.filter(project=project_id).filter(domain="Geography")
-  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form, 'pictures': pictures, 'domain': "geography"}
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'pictures': pictures,'picture_form': picture_form, 'pictures': pictures, 'domain': "geography"}
   return render(request, 'domains/geography.html', context)
 
 def warfare(request, project_name):
@@ -198,7 +211,7 @@ def warfare(request, project_name):
   
   post_form = PostForm()
   pictures= Picture.objects.filter(project=project_id).filter(domain="Warfare")
-  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "warfare"}
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'pictures': pictures,'domain': "warfare"}
   return render(request, 'domains/warfare.html', context )
 
 ################################### auth routes 
@@ -226,7 +239,7 @@ def profile(request):
   error_message = ''
   project_id = getCurrentProject(request, "placeholder")
   projects = Project.objects.filter(users=request.user)
-  pictures= Picture.objects.filter(project=project_id).filter(domain="Geography")
+  pictures= Picture.objects.filter(project=project_id)
   
   # project creation if posted
   if request.method == 'POST':

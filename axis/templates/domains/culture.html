@@ -8,8 +8,10 @@
         {% for summary in summaries %}
         <div class=".uk-card uk-card-default post {{summary.position}}">
             <p class="uk-flex uk-flex-center uk-flex-middle p{{summary.pk}}">{{ summary.text }}</p>
+            {% if user.is_authenticated %}
             <a uk-toggle="target: #update-summary" class="buttons uk-button uk-button-default openUpdateSummary"
                 data-summaryid="{{summary.pk}}">Update Post</a>
+            {% endif %}
         </div>
         {% endfor %}
 </div>

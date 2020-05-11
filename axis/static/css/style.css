@@ -206,18 +206,23 @@ footer {
 
 #gallery{
     display: flex;
+    flex-wrap: wrap;
     border: #D79922 solid;
     background-color: white;
     margin: 2vw;
     padding: 1vw;
 }
 
-
+.picard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
 
 .pictures {
-    max-width: 25vw;
+    max-width: 21vw;
     height: auto;
-    margin: 1vw 2vw;
+    margin: 1vw 3vw;
 }
 
 /* profile styles */

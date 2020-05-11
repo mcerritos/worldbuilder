@@ -26,7 +26,7 @@
   <h4 class="uk-flex-center uk-flex-middle">Pictures</h4>
   <div class=".uk-card uk-card-default" id="gallery">
     {% for picture in pictures %} 
-        <div class=".uk-card uk-card-default">
+        <div class=".uk-card uk-card-default picard">
           <img class="pictures" src="{{ picture.image.url }}" /> 
           <a href="/picture/{{picture.pk}}/delete" id="deletePicture" class="uk-button uk-button-default buttons">Delete Image</a>
         </div>
