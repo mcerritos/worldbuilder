@@ -209,8 +209,10 @@ def signup(request):
       login(request, user)
       project_form = ProjectForm()
       createNewProject(project_form, request, False)
+      return redirect('profile')
     else:
       error_message = 'Invalid sign up - try again'
+
   form = UserCreationForm()
   project_id = getCurrentProject(request, "anonymous")
   context = {'form': form, 'error_message': error_message, 'current_project': project_id}
