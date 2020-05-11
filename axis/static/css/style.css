@@ -85,6 +85,7 @@ footer {
     border-left: #D79922;
     background-color: white;
     flex-direction: column;
+    justify-content: left;
 }
 
 

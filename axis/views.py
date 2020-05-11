@@ -71,6 +71,8 @@ def createNewProject(project_form, request, populated):
   for dom in domains:
     new_domain = dom.objects.create(project=new_project)
     domain_questions = Question.objects.filter(domain=dom)
+    starting_summary = Post.objects.create(title="Summary", author=request.user, text="This is your domain summary. You can fill it out with whatever you like. You can place a broad overview of the topics that you want to address, or talk about statistics, characters, campaigns, or anything else you want to immediately link with the domain. The choice is yours!", position="Sum")
+    new_domain.posts.add(starting_summary)
     for q in domain_questions:
       new_domain.questions.add(q)
       new_domain.save()
