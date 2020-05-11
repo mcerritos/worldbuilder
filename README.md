@@ -1,7 +1,7 @@
 ## worldbuilder
 Worldbuilder is a website that allows you to collect, save, and access information on a fictional world of your own creation. 
 
-##Scope 	
+## Scope 	
 Worldbuilder allows users to create a small wiki for a conworld (created world) of their own construction. 
 
 ## Technologies
