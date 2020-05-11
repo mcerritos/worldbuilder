@@ -28,7 +28,7 @@ class Question(models.Model):
 class Post(models.Model):
     title= models.CharField(max_length=150)
     author= models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1)
-    text = models.TextField(max_length=2000)
+    text = models.TextField()
     position = models.CharField(
         max_length=3,
         choices=POSITIONS,
