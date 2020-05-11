@@ -32,11 +32,31 @@ function setPostId (event) {
     postId = postId.replace('p','');
     document.postUpdateForm.action = `/culture/post/${postId}/update`
     // these functions get the information from the page and load it into the document
-    let formtitle = document.querySelector('#id_title');
+    let formtitle = document.querySelector('#title');
     let formtext = document.querySelector('#updateText');
     formtitle.value = document.querySelector('h4[class*="' + postId +'"]').textContent;
     formtext.value = document.querySelector('p[class*="' + postId +'"]').textContent;
 }
+//// update the summary
+let summaryId;
+let allUpdateSummaryButtons = document.querySelectorAll(".openUpdateSummary");
+allUpdateSummaryButtons.forEach( (ele) => {
+	ele.addEventListener('click', setSummaryId);
+});
+// update route on modal
+function setSummaryId (event) {
+    summaryId = event.target.getAttribute('data-summaryid');
+    console.log(summaryId);
+    document.summaryUpdateForm.action = `/culture/post/${summaryId}/update`
+    // these functions get the information from the page and load it into the document
+    let formtext = document.querySelector('#updateSummaryText');
+    formtext.value = document.querySelector('p[class*="' + summaryId +'"]').textContent;
+}
+
+
+
+
+
 
 // toggle questions
 let questions = document.getElementById('questions')

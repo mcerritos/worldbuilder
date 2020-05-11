@@ -88,53 +88,57 @@ def culture(request, project_name):
   
   post_form = PostForm()
   context = {'questions' : questions, 'posts': posts,
-  'summaries': summaries, 'post_form': post_form, 'current_project': project_id,}
+  'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "culture"}
   return render(request, 'domains/culture.html', context )
 
 def government(request, project_name):
   project_id = getCurrentProject(request, project_name)
   gov = Government.objects.get(project=project_id)
   questions = Question.objects.filter(government=gov).all()
-  posts = Post.objects.filter(government=gov).all()
+  summaries = Post.objects.filter(government=gov).filter(position="Sum")
+  posts = Post.objects.filter(government=gov).filter(position="Ssc")
 
   if request.method == 'POST':
     handlePost(request, gov, "government")
     
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "government"}
   return render(request, 'domains/government.html', context)
 
 def history(request, project_name):
   project_id = getCurrentProject(request, project_name)
   hist = History.objects.get(project=project_id)
   questions = Question.objects.filter(history=hist).all()
-  posts = Post.objects.filter(history=hist).all()
+  summaries = Post.objects.filter(history=hist).filter(position="Sum")
+  posts = Post.objects.filter(history=hist).filter(position="Ssc")
 
   if request.method == 'POST':
     handlePost(request, hist, "history")
     
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "history"}
   return render(request, 'domains/history.html', context)
 
 def religion(request, project_name):
   project_id = getCurrentProject(request, project_name)
   r = Religion.objects.get(project=project_id)
   questions = Question.objects.filter(religion=r).all()
-  posts = Post.objects.filter(religion=r).all()
+  summaries = Post.objects.filter(religion=r).filter(position="Sum")
+  posts = Post.objects.filter(religion=r).filter(position="Ssc")
 
   if request.method == 'POST':
     handlePost(request, r, "religion")
   
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
+  context = {'questions' : questions, 'posts': posts,'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "religion"}
   return render(request, 'domains/religion.html', context )
 
 def geography(request, project_name):
   project_id = getCurrentProject(request, project_name)
   geo = Geography.objects.get(project=project_id)
   questions = Question.objects.filter(geography=geo).all()
-  posts = Post.objects.filter(geography=geo).all()
+  summaries = Post.objects.filter(geography=geo).filter(position="Sum")
+  posts = Post.objects.filter(geography=geo).filter(position="Ssc")
 
   if request.method == 'POST' and request.FILES:
     data = {'user':request.user,'project': project_id, 'domain': "Geography"}
@@ -150,20 +154,21 @@ def geography(request, project_name):
   post_form = PostForm()
   picture_form = PictureForm(initial={'user':request.user,'project': project_id})
   pictures= Picture.objects.filter(project=project_id).filter(domain="Geography")
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form, 'pictures': pictures }
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'picture_form': picture_form, 'pictures': pictures, 'domain': "geography"}
   return render(request, 'domains/geography.html', context)
 
 def warfare(request, project_name):
   project_id = getCurrentProject(request, project_name)
   w = Warfare.objects.get(project=project_id)
   questions = Question.objects.filter(warfare=w).all()
-  posts = Post.objects.filter(warfare=w).all()
+  summaries = Post.objects.filter(warfare=w).filter(position="Sum")
+  posts = Post.objects.filter(warfare=w).filter(position="Ssc")
 
   if request.method == 'POST':
     handlePost(request, w, "warfare")
   
   post_form = PostForm()
-  context = {'questions' : questions, 'posts': posts, 'post_form': post_form, 'current_project': project_id}
+  context = {'questions' : questions, 'posts': posts, 'summaries': summaries, 'post_form': post_form, 'current_project': project_id, 'domain': "warfare"}
   return render(request, 'domains/warfare.html', context )
 
 ################################### auth routes 
@@ -201,8 +206,10 @@ def profile(request):
     
   else:
     project_form = ProjectForm()
+
+  context= { 'projects': projects, 'project_form': project_form, 'error_message': error_message, 'current_project': project_id, 'pictures':pictures };
   
-  return render(request, 'registration/profile.html', { 'projects': projects, 'project_form': project_form, 'error_message': error_message, 'current_project': project_id, 'pictures':pictures })
+  return render(request, 'registration/profile.html', context )
 
 @login_required
 def project_delete(request, project_id):
@@ -231,18 +238,23 @@ def project_update(request, project_id):
 ##################### post delete and update
 
 @login_required
-def post_delete(request, post_id):
+def post_delete(request, domain, post_id):
+  project_id = getCurrentProject(request, "placeholder")
   ## post author is user.request
   this_post = Post.objects.get(id=post_id)
   if (this_post.author == request.user):
     Post.objects.get(id=post_id).delete()
   
-  return redirect('profile')
+  return redirect(domain, project_id)
 
 @login_required
 def post_update(request, domain, post_id):
   project_id = getCurrentProject(request, "placeholder")
   post = Post.objects.get(id=post_id)
+  
+  if request.method == 'POST' and post.position == 'Sum':
+    form = PostForm(request.POST, instance=post)
+    print(form)
   
   if request.method == 'POST':
     form = PostForm(request.POST or None, instance=post)

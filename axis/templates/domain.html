@@ -15,7 +15,7 @@
                 <p class=".uk-card-title uk-flex uk-flex-center uk-flex-middle"> by {{ post.author }} </p>
                 <p class="uk-flex uk-flex-center uk-flex-middle p{{post.pk}}">{{ post.text }}</p>
                 {% if user.username == post.author.username %}
-                    <a href="/post/{{post.pk}}/delete" class="buttons uk-button uk-button-default">Delete Post</a>
+                    <a href="/{{domain}}/post/{{post.pk}}/delete" class="buttons uk-button uk-button-default">Delete Post</a>
                     <a uk-toggle="target: #update-post" class="buttons uk-button uk-button-default openUpdatePost"
                      data-postid="{{post.pk}}" >Update Post</a>
                 {% endif %}
@@ -48,8 +48,8 @@
         <div class="uk-modal-dialog uk-modal-body" id="postUpdateDiv">
             <form name="postUpdateForm" action="{% url 'profile'}" method="POST">
             {% csrf_token %}
-                <label for="id_title">Title:</label><br>
-                <input type="text" id="id_title" name="title"><br>
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title"><br>
                 <label for="text">Text:</label><br>
                 <textarea rows="20" cols="30" maxlength="500" id="updateText" name="text"></textarea><br><br>
                 <label for="id_position">Position:</label>
@@ -64,14 +64,24 @@
         </div>
     </div>
 
-        <!-- {% if user.is_authenticated %}
-    <div class=".uk-card uk-card-default card">
-        <h5 class="uk-flex uk-flex-center uk-flex-middle">Questions</h5>
-        {% for question in questions %}
-            <p class="uk-flex uk-flex-center uk-flex-middle"> Description: {{ question.text }}</p>
-        {% endfor %} 
+    <div id="update-summary" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body" id="postUpdateDiv">
+            <form name="summaryUpdateForm" action="{% url 'profile'}" method="POST">
+            {% csrf_token %}
+                <label for="title">Title:</label><br>
+                <input type="text" id="title" name="title" value="Summary"><br>
+                <label for="text">Text:</label><br>
+                <textarea rows="20" cols="30" maxlength="500" id="updateSummaryText" name="text"></textarea><br><br>
+                <label for="id_position">Position:</label>
+                <select name="position" id="id_position">
+                    <option value="Sum">Summary</option>
+                    <option value="Shd">Section Header</option>
+                    <option value="Ssc" selected="">Subsection</option>
+                </select>
+            <input type="submit" class="btn buttons" id="updatePostButton">
+            </form>
+            {% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+        </div>
     </div>
-    {% endif %} -->
-
 
 {% endblock %}
